@@ -2,6 +2,7 @@ package ru.practicum.shareit.item.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exception.IdNotFoundException;
 import ru.practicum.shareit.exception.InternalServerException;
 import ru.practicum.shareit.item.Item;
@@ -11,7 +12,6 @@ import ru.practicum.shareit.item.dto.ItemOutputDTO;
 import ru.practicum.shareit.item.dto.ItemUpdateDTO;
 import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.utils.Validator;
-import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Collections;

@@ -1,12 +1,12 @@
 package ru.practicum.shareit.item.repository;
 
 import lombok.RequiredArgsConstructor;
-import ru.practicum.shareit.exception.InternalServerException;
-import ru.practicum.shareit.item.Item;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
+import ru.practicum.shareit.exception.InternalServerException;
+import ru.practicum.shareit.item.Item;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;

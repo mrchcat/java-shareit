@@ -1,8 +1,8 @@
 package ru.practicum.shareit.item.repository;
 
-import ru.practicum.shareit.item.Item;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
+import ru.practicum.shareit.item.Item;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
