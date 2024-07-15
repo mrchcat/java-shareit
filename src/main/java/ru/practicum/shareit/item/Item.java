@@ -1,4 +1,4 @@
-package ru.practicum.shareit.user;
+package ru.practicum.shareit.item;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -9,8 +9,11 @@ import lombok.ToString;
 @Setter
 @Builder
 @ToString
-public class User {
+public class Item {
     private long id;
     private String name;
-    private String email;
+    private String description;
+    private boolean available;
+    private long owner;
+    private long request;
 }
