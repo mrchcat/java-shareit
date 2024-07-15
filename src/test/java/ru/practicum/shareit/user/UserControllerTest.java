@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ru.practicum.shareit.user.dto.UserNewDTO;
 import ru.practicum.shareit.user.service.UserService;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,6 +36,14 @@ class UserControllerTest {
     }
 
     @Test
+    @DisplayName("check controller for delete user")
+    void correctDeleteUserRequest() throws Exception {
+        long userId=100L;
+        mockMvc.perform(delete("/users/"+userId));
+        Mockito.verify(userService).deleteUser(userId);
+    }
+
+    @Test
     @DisplayName("check controller for correct create user request")
     void correctUserRequest() throws Exception {
         UserNewDTO user=UserNewDTO.builder().name("Anna").email("anna@mail.ru").build();
@@ -42,4 +51,5 @@ class UserControllerTest {
         mockMvc.perform(post("/users").contentType("application/json").content(json));
         Mockito.verify(userService).createUser(user);
     }
+
 }
