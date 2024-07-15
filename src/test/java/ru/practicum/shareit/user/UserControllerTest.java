@@ -38,15 +38,15 @@ class UserControllerTest {
     @Test
     @DisplayName("check controller for delete user")
     void correctDeleteUserRequest() throws Exception {
-        long userId=100L;
-        mockMvc.perform(delete("/users/"+userId));
+        long userId = 100L;
+        mockMvc.perform(delete("/users/" + userId));
         Mockito.verify(userService).deleteUser(userId);
     }
 
     @Test
     @DisplayName("check controller for correct create user request")
     void correctUserRequest() throws Exception {
-        UserNewDTO user=UserNewDTO.builder().name("Anna").email("anna@mail.ru").build();
+        UserNewDTO user = UserNewDTO.builder().name("Anna").email("anna@mail.ru").build();
         String json = objectMapper.writeValueAsString(user);
         mockMvc.perform(post("/users").contentType("application/json").content(json));
         Mockito.verify(userService).createUser(user);
