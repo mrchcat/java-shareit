@@ -20,8 +20,10 @@ spring:
 
 logging:
   level:
-    org.springframework.web: WARN
+    org.springframework.orm.jpa: INFO
+    org.springframework.transaction: INFO
+    org.springframework.transaction.interceptor: TRACE
+    org.springframework.orm.jpa.JpaTransactionManager: DEBUG
     org.my: INFO
   pattern:
     console: "%d{HH:mm:ss} %-5level %logger{36} - %msg%n"
-
