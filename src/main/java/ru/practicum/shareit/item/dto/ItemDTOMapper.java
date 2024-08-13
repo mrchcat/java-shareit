@@ -13,12 +13,12 @@ public class ItemDTOMapper {
                 .build();
     }
 
-    public static Item fromNewDTO(long userId, ItemNewDTO itemNewDTO) {
+    public static Item fromNewDTO(User user, ItemNewDTO itemNewDTO) {
         return Item.builder()
                 .name(itemNewDTO.getName())
                 .description(itemNewDTO.getDescription())
                 .available(itemNewDTO.getAvailable())
-                .owner(User.builder().id(userId).build())
+                .owner(user)
                 .build();
     }
 }

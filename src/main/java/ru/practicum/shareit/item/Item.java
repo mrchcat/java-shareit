@@ -36,13 +36,13 @@ public class Item {
     @Column(name = "is_available", nullable = false)
     private boolean available;
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", nullable = false)
-    @ToString.Exclude
     private User owner;
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "request_id")
-    @ToString.Exclude
     private ItemRequest request;
 }

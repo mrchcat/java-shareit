@@ -10,6 +10,8 @@ import ru.practicum.shareit.item.dto.ItemNewDTO;
 import ru.practicum.shareit.item.dto.ItemOutputDTO;
 import ru.practicum.shareit.item.dto.ItemUpdateDTO;
 import ru.practicum.shareit.item.repository.ItemRepository;
+import ru.practicum.shareit.user.User;
+import ru.practicum.shareit.user.repository.UserRepository;
 import ru.practicum.shareit.utils.Validator;
 
 import java.util.Collection;
@@ -24,12 +26,14 @@ import static java.util.Objects.nonNull;
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
+    private final UserRepository userRepository;
     private final Validator validator;
 
     @Override
     public ItemOutputDTO createItem(long userId, ItemNewDTO itemNewDTO) {
-        validator.validateIfUserNotExists(userId);
-        Item itemToCreate = ItemDTOMapper.fromNewDTO(userId, itemNewDTO);
+        User user=userRepository.findById(userId)
+                .orElseThrow(()->new IdNotFoundException(String.format("User with id=%d does not exists", userId)));
+        Item itemToCreate = ItemDTOMapper.fromNewDTO(user, itemNewDTO);
         Item createdItem = itemRepository.save(itemToCreate);
         log.info("{} was created", createdItem);
         return ItemDTOMapper.toDTO(createdItem);
