@@ -21,19 +21,19 @@ public class Validator {
     }
 
     public void validateIfEmailIsUnique(String email) {
-        if (userRepository.existsByEmail(email)) {
+        if (userRepository.hasEmail(email)) {
             throw new ObjectAlreadyExistsException("User with email=" + email + " already exists", email);
         }
     }
 
     public void validateIfEmailIsUnique(String email, long userId) {
-        if (userRepository.existsByIdAndEmail(userId,email)) {
-            throw new ObjectAlreadyExistsException("User with email=" + email + " already exists", email);
+        if (userRepository.hasEmail(userId, email)) {
+            throw new ObjectAlreadyExistsException("Duplicate email=" + email, email);
         }
     }
 
     public void validateIfUserOwnsItem(long userId, long itemId) {
-        if (!itemRepository.existsByIdAndOwner_id(itemId,userId)) {
+        if (!itemRepository.existsByIdAndOwner_id(itemId, userId)) {
             throw new IdNotFoundException(String.format("User id=%d does not own item id=%d", userId, itemId));
         }
     }

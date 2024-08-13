@@ -12,7 +12,10 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import ru.practicum.shareit.item.Item;
@@ -20,7 +23,12 @@ import ru.practicum.shareit.user.User;
 
 import java.time.LocalDateTime;
 
-@Getter @Setter @ToString
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "bookings")
 public class Booking {
@@ -36,14 +44,14 @@ public class Booking {
     @Column(name = "end_date", nullable = false)
     private LocalDateTime end;
 
+    @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "item_id", nullable = false)
-    @ToString.Exclude
     private Item item;
 
+    @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "booker_id", nullable = false)
-    @ToString.Exclude
     private User booker;
 
     @Enumerated(EnumType.STRING)

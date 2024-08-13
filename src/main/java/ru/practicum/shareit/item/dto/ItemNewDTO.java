@@ -1,6 +1,5 @@
 package ru.practicum.shareit.item.dto;
 
-import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -21,6 +20,6 @@ public class ItemNewDTO {
     private String description;
 
     @NotNull(message = "item availability is null")
-    @AssertTrue
+//    @AssertTrue
     private Boolean available;
 }

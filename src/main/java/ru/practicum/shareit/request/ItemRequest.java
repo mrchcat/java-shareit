@@ -17,7 +17,9 @@ import ru.practicum.shareit.user.User;
 
 import java.time.LocalDateTime;
 
-@Getter @Setter @ToString
+@Getter
+@Setter
+@ToString
 @Entity
 @Table(name = "requests")
 public class ItemRequest {
@@ -26,7 +28,7 @@ public class ItemRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name="description")
+    @Column(name = "description")
     private String description;
 
     @ManyToOne
