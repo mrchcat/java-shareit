@@ -15,7 +15,7 @@ public class Validator {
 
 
     public void validateIfUserNotExists(long userId) {
-        if (!userRepository.hasUserId(userId)) {
+        if (!userRepository.existsById(userId)) {
             throw new IdNotFoundException(String.format("User with id=%d does not exists", userId));
         }
     }

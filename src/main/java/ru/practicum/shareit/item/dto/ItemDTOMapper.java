@@ -1,6 +1,7 @@
 package ru.practicum.shareit.item.dto;
 
 import ru.practicum.shareit.item.Item;
+import ru.practicum.shareit.user.User;
 
 public class ItemDTOMapper {
     public static ItemOutputDTO toDTO(Item item) {
@@ -17,7 +18,7 @@ public class ItemDTOMapper {
                 .name(itemNewDTO.getName())
                 .description(itemNewDTO.getDescription())
                 .available(itemNewDTO.getAvailable())
-                .owner(userId)
+                .owner(User.builder().id(userId).build())
                 .build();
     }
 }

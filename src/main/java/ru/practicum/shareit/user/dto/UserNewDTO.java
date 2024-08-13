@@ -16,8 +16,8 @@ import org.hibernate.validator.constraints.Length;
 @ToString
 @EqualsAndHashCode
 public class UserNewDTO {
-    @NotBlank(message = "name is empty")
-    @Length(max = 50, message = "name must be less than 50 digits")
+    @NotBlank(message = "name can not be empty")
+    @Length(min = 1, max = 50, message = "name must have 1-50 digits")
     private String name;
     @NotNull(message = "email is mandatory")
     @Email(message = "incorrect email")

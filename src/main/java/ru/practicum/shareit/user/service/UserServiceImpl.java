@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exception.IdNotFoundException;
-import ru.practicum.shareit.exception.InternalServerException;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.dto.UserDTOMapper;
 import ru.practicum.shareit.user.dto.UserNewDTO;
@@ -14,8 +13,6 @@ import ru.practicum.shareit.user.repository.UserRepository;
 import ru.practicum.shareit.utils.Validator;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 import static java.util.Objects.nonNull;
@@ -31,7 +28,7 @@ public class UserServiceImpl implements UserService {
     public UserOutputDTO createUser(UserNewDTO userNewDTO) {
         validator.validateIfEmailIsUnique(userNewDTO.getEmail());
         User userToCreate = UserDTOMapper.fromNewDTO(userNewDTO);
-        User createdUser = userRepository.createUser(userToCreate);
+        User createdUser = userRepository.save(userToCreate)  ;
         log.info("{} was created", createdUser);
         return UserDTOMapper.toDTO(createdUser);
     }
@@ -43,54 +40,44 @@ public class UserServiceImpl implements UserService {
         if (nonNull(updateUserDTO.getEmail())) {
             validator.validateIfEmailIsUnique(email, userId);
         }
-        Map<String, Object> fieldsToUpdate = fillInFieldsToUpdate(updateUserDTO);
-        if (!fieldsToUpdate.isEmpty()) {
-            boolean isUpdated = userRepository.updateUser(userId, fieldsToUpdate);
-            if (!isUpdated) {
-                throw new InternalServerException(String.format("User with id=%d was not updated", userId));
-            }
-        }
-        Optional<User> updatedUser = userRepository.getUser(userId);
-        if (updatedUser.isEmpty()) {
-            throw new InternalServerException(String.format("User with id=%d was not updated", userId));
-        }
+        User oldUser=userRepository.findById(userId)
+                .orElseThrow(()->new IdNotFoundException(String.format("User with id=%d does not exists", userId)));
+
+        User userToUpdate = fillInFieldsToUpdate(oldUser, updateUserDTO);
+        User updatedUser= userRepository.save(userToUpdate);
         log.info("{} was updated", updatedUser);
-        return UserDTOMapper.toDTO(updatedUser.get());
+        return UserDTOMapper.toDTO(updatedUser);
     }
 
-    private Map<String, Object> fillInFieldsToUpdate(UserUpdateDTO updateUserDTO) {
-        Map<String, Object> fieldsToUpdate = new HashMap<>();
+    private User fillInFieldsToUpdate(User user, UserUpdateDTO updateUserDTO) {
         String email = updateUserDTO.getEmail();
         if (nonNull(email)) {
-            fieldsToUpdate.put("email", email);
+            user.setEmail(email);
         }
         String name = updateUserDTO.getName();
         if (nonNull(name)) {
-            fieldsToUpdate.put("name", name);
+            user.setName(name);
         }
-        return fieldsToUpdate;
+        return user;
     }
 
     @Override
     public void deleteUser(long userId) {
         validator.validateIfUserNotExists(userId);
-        boolean isDeleted = userRepository.deleteUser(userId);
-        if (!isDeleted) {
-            throw new InternalServerException(String.format("User with id=%d was not deleted", userId));
-        }
+        userRepository.deleteById(userId);
         log.info("User with id={} deleted", userId);
     }
 
     @Override
     public UserOutputDTO getUser(long userId) {
-        Optional<User> user = userRepository.getUser(userId);
+        Optional<User> user = userRepository.findById(userId);
         return user.map(UserDTOMapper::toDTO).orElseThrow(
                 () -> new IdNotFoundException("User with id=" + userId + " not found"));
     }
 
     @Override
     public Collection<UserOutputDTO> getAllUsers() {
-        Collection<User> users = userRepository.getAllUsers();
+        Collection<User> users = userRepository.findAll();
         return users.stream()
                 .map(UserDTOMapper::toDTO)
                 .toList();

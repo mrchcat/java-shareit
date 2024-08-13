@@ -15,10 +15,12 @@ public class ItemNewDTO {
     @NotBlank(message = "name is empty")
     @Length(max = 50, message = "name must be less than 50 digits")
     private String name;
+
     @NotBlank(message = "name is empty")
     @Length(max = 200, message = "description must be less than 50 digits")
     private String description;
-    @NotNull(message = "available is null")
+
+    @NotNull(message = "item availability is null")
     @AssertTrue
     private Boolean available;
 }
