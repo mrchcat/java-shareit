@@ -20,6 +20,5 @@ public class ItemNewDTO {
     private String description;
 
     @NotNull(message = "item availability is null")
-//    @AssertTrue
     private Boolean available;
 }

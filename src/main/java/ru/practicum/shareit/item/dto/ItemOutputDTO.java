@@ -3,6 +3,9 @@ package ru.practicum.shareit.item.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import ru.practicum.shareit.item.Comment;
+
+import java.util.Collection;
 
 @Getter
 @Setter
@@ -12,4 +15,5 @@ public class ItemOutputDTO {
     private String name;
     private String description;
     private boolean available;
+    private Collection<CommentOutputDTO> comments;
 }

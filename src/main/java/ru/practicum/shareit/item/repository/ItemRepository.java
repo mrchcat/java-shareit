@@ -17,5 +17,8 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
             "OR LOWER(i.description) like CONCAT('%', LOWER(?1) , '%'))")
     Collection<Item> searchItems(String text);
 
-    boolean existsByIdAndOwner_id(long itemId, long userId);
+    @Query("SELECT CASE WHEN COUNT(i)> 0 THEN TRUE ELSE FALSE END "+
+            "FROM Item AS i " +
+            "WHERE i.id=?1 AND i.owner.id=?2")
+    boolean existsByIdAndOwner(long itemId, long userId);
 }

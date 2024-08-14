@@ -85,4 +85,10 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             "AND b.status='WAITING' " +
             "ORDER BY b.start ASC")
     List<Booking> getWaitingBookingsForUserItems(long userId);
+
+    @Query("SELECT CASE WHEN COUNT(b)> 0 THEN TRUE ELSE FALSE END "+
+            "FROM Booking AS b " +
+            "WHERE b.booker.id=?1 AND b.item.id=?2")
+    boolean isUserBookedItem(long userId, long  itemId);
+
 }
