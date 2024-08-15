@@ -6,7 +6,6 @@ spring:
     init.mode: always
   datasource:
     url: jdbc:postgresql://localhost:5432/shareit
-    #    url: jdbc:h2:mem:shareit
     username: mcat
     password: 12345
     driverClassName: org.postgresql.Driver
@@ -23,7 +22,7 @@ logging:
     org.springframework.orm.jpa: INFO
     org.springframework.transaction: INFO
     org.springframework.transaction.interceptor: INFO
-    org.springframework.orm.jpa.JpaTransactionManager: INFO
+    org.springframework.orm.jpa.JpaTransactionManager: DEBUG
     org.my: INFO
   pattern:
     console: "%d{HH:mm:ss} %-5level %logger{36} - %msg%n"
