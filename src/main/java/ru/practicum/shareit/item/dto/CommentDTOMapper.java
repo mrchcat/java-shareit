@@ -16,7 +16,7 @@ public class CommentDTOMapper {
                 .build();
     }
 
-    public static Comment fromNewDTO(User user, Item item, LocalDateTime creationTime, CommentNewDTO dto ) {
+    public static Comment fromNewDTO(User user, Item item, LocalDateTime creationTime, CommentNewDTO dto) {
         return Comment.builder()
                 .text(dto.getText())
                 .item(item)

@@ -9,6 +9,7 @@ import java.util.List;
 public interface BookingService {
 
     BookingOutputDto createBooking(long userId, BookingNewDto booking);
+
     BookingOutputDto answerBookingRequest(long userId, long bookingId, boolean isApproved);
 
     BookingOutputDto getBookingStatus(long userId, long bookingId);

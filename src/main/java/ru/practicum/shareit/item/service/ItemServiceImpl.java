@@ -79,7 +79,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemOutputDTOWithBookings getItem(long userId, long itemId) {
         Optional<Item> item = itemRepository.findById(itemId);
-        return item.map(i->itemDTOMapper.toDTOWithBookings(userId,i)).orElseThrow(
+        return item.map(i -> itemDTOMapper.toDTOWithBookings(userId, i)).orElseThrow(
                 () -> new IdNotFoundException("Item with id=" + itemId + " not found"));
     }
 
@@ -88,7 +88,7 @@ public class ItemServiceImpl implements ItemService {
         validator.validateIfUserNotExists(userId);
         Collection<Item> items = itemRepository.getAllItems(userId);
         return items.stream()
-                .map(i->itemDTOMapper.toDTOWithBookings(userId,i))
+                .map(i -> itemDTOMapper.toDTOWithBookings(userId, i))
                 .toList();
     }
 
@@ -110,8 +110,8 @@ public class ItemServiceImpl implements ItemService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IdNotFoundException(String.format("User with id=%d does not exists", userId)));
         validator.validateIfUserBookedItem(userId, itemId);
-        Comment comment= CommentDTOMapper.fromNewDTO(user, item, LocalDateTime.now(), commentDto);
-        Comment newComment=commentRepository.save(comment);
+        Comment comment = CommentDTOMapper.fromNewDTO(user, item, LocalDateTime.now(), commentDto);
+        Comment newComment = commentRepository.save(comment);
         log.info("{} was added", newComment);
         return CommentDTOMapper.toDTO(newComment);
     }

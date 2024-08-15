@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
     public UserOutputDTO createUser(UserNewDTO userNewDTO) {
         validator.validateIfEmailIsUnique(userNewDTO.getEmail());
         User userToCreate = UserDTOMapper.fromNewDTO(userNewDTO);
-        User createdUser = userRepository.save(userToCreate)  ;
+        User createdUser = userRepository.save(userToCreate);
         log.info("{} was created", createdUser);
         return UserDTOMapper.toDTO(createdUser);
     }
@@ -40,11 +40,11 @@ public class UserServiceImpl implements UserService {
         if (nonNull(updateUserDTO.getEmail())) {
             validator.validateIfEmailIsUnique(email, userId);
         }
-        User oldUser=userRepository.findById(userId)
-                .orElseThrow(()->new IdNotFoundException(String.format("User with id=%d does not exists", userId)));
+        User oldUser = userRepository.findById(userId)
+                .orElseThrow(() -> new IdNotFoundException(String.format("User with id=%d does not exists", userId)));
 
         User userToUpdate = fillInFieldsToUpdate(oldUser, updateUserDTO);
-        User updatedUser= userRepository.save(userToUpdate);
+        User updatedUser = userRepository.save(userToUpdate);
         log.info("{} was updated", updatedUser);
         return UserDTOMapper.toDTO(updatedUser);
     }

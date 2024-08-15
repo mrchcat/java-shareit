@@ -39,7 +39,7 @@ public class BookingServiceImpl implements BookingService {
         long itemId = newBooking.getItemId();
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new IdNotFoundException(String.format("Item with id=%d does not exists", itemId)));
-        if(!item.isAvailable()) {
+        if (!item.isAvailable()) {
             throw new InternalServerException(String.format("Item with id=%d is not available", itemId));
         }
         Booking booking = BookingDTOMapper.fromNewDTO(user, item, newBooking);
@@ -78,9 +78,9 @@ public class BookingServiceImpl implements BookingService {
         List<Booking> bookings = switch (state) {
             case ALL -> bookingRepository.getAllBookingsOfUser(userId);
             case PAST -> bookingRepository.getPastBookingsOfUser(userId);
-            case CURRENT ->bookingRepository.getCurrentBookingsOfUser(userId);
+            case CURRENT -> bookingRepository.getCurrentBookingsOfUser(userId);
             case FUTURE -> bookingRepository.getFutureBookingsOfUser(userId);
-            case REJECTED-> bookingRepository.getRejectedBookingsOfUser(userId);
+            case REJECTED -> bookingRepository.getRejectedBookingsOfUser(userId);
             case WAITING -> bookingRepository.getWaitingBookingsOfUser(userId);
         };
         return bookings.stream()
@@ -94,9 +94,9 @@ public class BookingServiceImpl implements BookingService {
         List<Booking> bookings = switch (state) {
             case ALL -> bookingRepository.getAllBookingsForUserItems(userId);
             case PAST -> bookingRepository.getPastBookingsForUserItems(userId);
-            case CURRENT ->bookingRepository.getCurrentBookingsForUserItems(userId);
+            case CURRENT -> bookingRepository.getCurrentBookingsForUserItems(userId);
             case FUTURE -> bookingRepository.getFutureBookingsForUserItems(userId);
-            case REJECTED-> bookingRepository.getRejectedBookingsForUserItems(userId);
+            case REJECTED -> bookingRepository.getRejectedBookingsForUserItems(userId);
             case WAITING -> bookingRepository.getWaitingBookingsForUserItems(userId);
         };
         return bookings.stream()
