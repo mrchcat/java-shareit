@@ -4,6 +4,7 @@ import ru.practicum.shareit.item.dto.CommentNewDTO;
 import ru.practicum.shareit.item.dto.CommentOutputDTO;
 import ru.practicum.shareit.item.dto.ItemNewDTO;
 import ru.practicum.shareit.item.dto.ItemOutputDTO;
+import ru.practicum.shareit.item.dto.ItemOutputDTOWithBookings;
 import ru.practicum.shareit.item.dto.ItemUpdateDTO;
 
 import java.util.Collection;
@@ -13,10 +14,11 @@ public interface ItemService {
 
     ItemOutputDTO updateItem(long userId, long itemId, ItemUpdateDTO itemUpdateDTO);
 
-    ItemOutputDTO getItem(long userId, long itemId);
+    ItemOutputDTOWithBookings getItem(long userId, long itemId);
 
-    Collection<ItemOutputDTO> getAllItems(long userId);
-    Collection<ItemOutputDTO> searchItems(long userId,String text);
+    Collection<ItemOutputDTOWithBookings> getAllItems(long userId);
 
-    CommentOutputDTO addComment(long userId, long  itemId, CommentNewDTO comment);
+    Collection<ItemOutputDTO> searchItems(String text);
+
+    CommentOutputDTO addComment(long userId, long itemId, CommentNewDTO comment);
 }

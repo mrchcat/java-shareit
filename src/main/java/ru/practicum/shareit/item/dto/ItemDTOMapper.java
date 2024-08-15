@@ -18,12 +18,30 @@ public class ItemDTOMapper {
     private final CommentRepository commentRepository;
     private final BookingRepository bookingRepository;
 
-    public ItemOutputDTO toDTO(long userId, Item item) {
-        Collection<Comment> comments = commentRepository.getCommentsByItem(item.getId());
-        Collection<CommentOutputDTO> commentsDTO = comments.stream().map(CommentDTOMapper::toDTO).toList();
-        Optional<Booking> lastBooking = bookingRepository.getLastBookingForItemOwnedByUser(userId, item.getId());
-        Optional<Booking> nextBooking = bookingRepository.getNextBookingForItemOwnedByUser(userId, item.getId());
+    public ItemOutputDTO toDTO(Item item) {
+        var commentsDTO = commentRepository
+                .getCommentsByItem(item.getId())
+                .stream()
+                .map(CommentDTOMapper::toDTO)
+                .toList();
         return ItemOutputDTO.builder()
+                .id(item.getId())
+                .name(item.getName())
+                .description(item.getDescription())
+                .available(item.isAvailable())
+                .comments(commentsDTO)
+                .build();
+    }
+
+    public ItemOutputDTOWithBookings toDTOWithBookings(long userId, Item item) {
+        var commentsDTO = commentRepository
+                .getCommentsByItem(item.getId())
+                .stream()
+                .map(CommentDTOMapper::toDTO)
+                .toList();
+        var lastBooking = bookingRepository.getLastBookingForItemOwnedByUser(userId, item.getId());
+        var nextBooking = bookingRepository.getNextBookingForItemOwnedByUser(userId, item.getId());
+        return ItemOutputDTOWithBookings.builder()
                 .id(item.getId())
                 .name(item.getName())
                 .description(item.getDescription())

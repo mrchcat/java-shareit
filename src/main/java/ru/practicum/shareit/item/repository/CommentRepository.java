@@ -8,15 +8,15 @@ import java.util.Collection;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-    @Query("SELECT com FROM Comment AS com WHERE com.item.id=?1")
+    @Query("SELECT k " +
+           "FROM Comment AS k " +
+           "WHERE k.item.id=?1")
     Collection<Comment> getCommentsByItem(long itemId);
 
-    @Query("SELECT km " +
-           "FROM User AS u " +
-           "JOIN FETCH Item AS i ON u.id=i.owner.id " +
-           "JOIN FETCH Comment AS km ON km.item.id=i.id " +
-           "WHERE u.id=?1")
-    Collection<Comment> getCommentsByUserItems(long itemId);
-
-
+//    @Query("SELECT k " +
+//           "FROM Comment AS k "+
+//           "JOIN FETCH Item AS i "+
+//           "JOIN FETCH User AS u " +
+//           "WHERE u.id=:userId")
+//    Collection<Comment> getCommentsByUserItems(long userId);
 }

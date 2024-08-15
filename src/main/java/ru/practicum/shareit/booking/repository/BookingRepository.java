@@ -10,37 +10,37 @@ import java.util.Optional;
 public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     @Query("SELECT b FROM Booking AS b " +
-            "WHERE b.booker.id=?1 " +
+            "WHERE b.booker.id=:userId " +
             "ORDER BY b.start ASC")
     List<Booking> getAllBookingsOfUser(long userId);
 
     @Query("SELECT b FROM Booking AS b " +
-            "WHERE b.booker.id=?1 " +
+            "WHERE b.booker.id=:userId " +
             "AND b.end<CURRENT_TIMESTAMP " +
             "ORDER BY b.start ASC")
     List<Booking> getPastBookingsOfUser(long userId);
 
     @Query("SELECT b FROM Booking AS b " +
-            "WHERE b.booker.id=?1 " +
+            "WHERE b.booker.id=:userId " +
             "AND b.start>CURRENT_TIMESTAMP " +
             "AND b.end<CURRENT_TIMESTAMP " +
             "ORDER BY b.start ASC")
     List<Booking> getCurrentBookingsOfUser(long userId);
 
     @Query("SELECT b FROM Booking AS b " +
-            "WHERE b.booker.id=?1 " +
+            "WHERE b.booker.id=:userId " +
             "AND b.start>CURRENT_TIMESTAMP " +
             "ORDER BY b.start ASC")
     List<Booking> getFutureBookingsOfUser(long userId);
 
     @Query("SELECT b FROM Booking AS b " +
-            "WHERE b.booker.id=?1 " +
+            "WHERE b.booker.id=:userId " +
             "AND b.status='REJECTED' " +
             "ORDER BY b.start ASC")
     List<Booking> getRejectedBookingsOfUser(long userId);
 
     @Query("SELECT b FROM Booking AS b " +
-            "WHERE b.booker.id=?1 " +
+            "WHERE b.booker.id=:userId " +
             "AND b.status='WAITING' " +
             "ORDER BY b.start ASC")
     List<Booking> getWaitingBookingsOfUser(long userId);
@@ -48,14 +48,14 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     @Query("SELECT b " +
             "FROM Booking AS b " +
             "JOIN FETCH b.item AS i " +
-            "WHERE i.owner.id=?1 " +
+            "WHERE i.owner.id=:userId " +
             "ORDER BY b.start ASC")
     List<Booking> getAllBookingsForUserItems(long userId);
 
     @Query("SELECT b " +
             "FROM Booking AS b " +
             "JOIN FETCH b.item AS i " +
-            "WHERE i.owner.id=?1 " +
+            "WHERE i.owner.id=:userId " +
             "AND b.end<CURRENT_TIMESTAMP " +
             "ORDER BY b.start ASC")
     List<Booking> getPastBookingsForUserItems(long userId);
@@ -63,7 +63,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     @Query("SELECT b " +
             "FROM Booking AS b " +
             "JOIN FETCH b.item AS i " +
-            "WHERE i.owner.id=?1 " +
+            "WHERE i.owner.id=:userId " +
             "AND b.start>CURRENT_TIMESTAMP " +
             "AND b.end<CURRENT_TIMESTAMP " +
             "ORDER BY b.start ASC")
@@ -72,7 +72,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     @Query("SELECT b " +
             "FROM Booking AS b " +
             "JOIN FETCH b.item AS i " +
-            "WHERE i.owner.id=?1 " +
+            "WHERE i.owner.id=:userId " +
             "AND b.start>CURRENT_TIMESTAMP " +
             "ORDER BY b.start ASC")
     List<Booking> getFutureBookingsForUserItems(long userId);
@@ -80,7 +80,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     @Query("SELECT b " +
             "FROM Booking AS b " +
             "JOIN FETCH b.item AS i " +
-            "WHERE i.owner.id=?1 " +
+            "WHERE i.owner.id=:userId " +
             "AND b.status='REJECTED' " +
             "ORDER BY b.start ASC")
     List<Booking> getRejectedBookingsForUserItems(long userId);
@@ -88,23 +88,23 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     @Query("SELECT b " +
             "FROM Booking AS b " +
             "JOIN FETCH b.item AS i " +
-            "WHERE i.owner.id=?1 " +
+            "WHERE i.owner.id=:userId " +
             "AND b.status='WAITING' " +
             "ORDER BY b.start ASC")
     List<Booking> getWaitingBookingsForUserItems(long userId);
 
     @Query("SELECT CASE WHEN COUNT(b)> 0 THEN TRUE ELSE FALSE END " +
             "FROM Booking AS b " +
-            "WHERE b.booker.id=?1 " +
-            "AND b.item.id=?2 " +
+            "WHERE b.booker.id=:userId " +
+            "AND b.item.id=:itemId " +
             "AND b.end<CURRENT_TIMESTAMP")
     boolean isUserBookedItem(long userId, long itemId);
 
     @Query("SELECT b " +
             "FROM Booking AS b " +
             "JOIN FETCH b.item AS i " +
-            "WHERE i.owner.id=?1 " +
-            "AND i.id = ?2 " +
+            "WHERE i.owner.id=:userId " +
+            "AND i.id = :itemId " +
             "AND b.end < CURRENT_TIMESTAMP " +
             "ORDER BY b.end DESC " +
             "LIMIT 1")
@@ -113,8 +113,8 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     @Query("SELECT b " +
             "FROM Booking AS b " +
             "JOIN FETCH b.item AS i " +
-            "WHERE i.owner.id=?1 " +
-            "AND i.id = ?2 " +
+            "WHERE i.owner.id=:userId " +
+            "AND i.id = :itemId " +
             "AND b.start > CURRENT_TIMESTAMP " +
             "AND b.status != 'REJECTED' " +
             "ORDER BY b.start ASC " +

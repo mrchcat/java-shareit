@@ -19,6 +19,7 @@ import ru.practicum.shareit.item.dto.CommentNewDTO;
 import ru.practicum.shareit.item.dto.CommentOutputDTO;
 import ru.practicum.shareit.item.dto.ItemNewDTO;
 import ru.practicum.shareit.item.dto.ItemOutputDTO;
+import ru.practicum.shareit.item.dto.ItemOutputDTOWithBookings;
 import ru.practicum.shareit.item.dto.ItemUpdateDTO;
 import ru.practicum.shareit.item.service.ItemService;
 
@@ -51,15 +52,15 @@ public class ItemController {
 
     @GetMapping("/{itemId}")
     @ResponseStatus(HttpStatus.OK)
-    public ItemOutputDTO getItem(@RequestHeader("X-Sharer-User-Id") @Positive long userId,
-                                 @PathVariable @Positive long itemId) {
+    public ItemOutputDTOWithBookings getItem(@RequestHeader("X-Sharer-User-Id") @Positive long userId,
+                                             @PathVariable @Positive long itemId) {
         log.info("Received request from userId={} to get item with id= {}", userId, itemId);
         return itemService.getItem(userId, itemId);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<ItemOutputDTO> getAllItems(@RequestHeader("X-Sharer-User-Id") @Positive long userId) {
+    public Collection<ItemOutputDTOWithBookings> getAllItems(@RequestHeader("X-Sharer-User-Id") @Positive long userId) {
         log.info("Received request from userId={} to get all items", userId);
         return itemService.getAllItems(userId);
     }
@@ -69,7 +70,7 @@ public class ItemController {
     public Collection<ItemOutputDTO> searchItems(@RequestHeader("X-Sharer-User-Id") @Positive long userId,
                                                  @RequestParam("text") String text) {
         log.info("Received request from userId={} to get items with text={}", userId, text);
-        return itemService.searchItems(userId, text);
+        return itemService.searchItems(text);
     }
 
     @PostMapping("/{itemId}/comment")
