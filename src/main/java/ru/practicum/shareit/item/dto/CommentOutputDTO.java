@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @ToString
@@ -13,4 +15,5 @@ public class CommentOutputDTO {
     long id;
     String text;
     String authorName;
+    LocalDateTime created;
 }

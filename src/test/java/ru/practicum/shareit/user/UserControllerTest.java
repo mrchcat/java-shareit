@@ -12,6 +12,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import ru.practicum.shareit.user.controller.UserController;
 import ru.practicum.shareit.user.dto.UserNewDTO;
 import ru.practicum.shareit.user.service.UserService;
 

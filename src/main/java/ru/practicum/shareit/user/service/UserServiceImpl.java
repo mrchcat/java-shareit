@@ -4,11 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exception.IdNotFoundException;
-import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.dto.UserDTOMapper;
 import ru.practicum.shareit.user.dto.UserNewDTO;
 import ru.practicum.shareit.user.dto.UserOutputDTO;
 import ru.practicum.shareit.user.dto.UserUpdateDTO;
+import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 import ru.practicum.shareit.utils.Validator;
 

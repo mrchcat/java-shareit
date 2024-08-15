@@ -1,5 +1,6 @@
-package ru.practicum.shareit.item;
+package ru.practicum.shareit.item.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -15,7 +16,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import ru.practicum.shareit.user.User;
+import ru.practicum.shareit.request.model.ItemRequest;
+import ru.practicum.shareit.user.model.User;
 
 @Getter
 @Setter
@@ -23,21 +25,32 @@ import ru.practicum.shareit.user.User;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "comments")
 @Entity
-public class Comment {
+@Table(name = "items")
+public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    private long id;
 
-    @Column(name = "text", nullable = false)
-    String text;
+    @Column(name = "name", nullable = false)
+    private String name;
 
+    @Column(name = "description", nullable = false)
+    private String description;
+
+    @Column(name = "is_available", nullable = false)
+    private boolean available;
+
+    @ToString.Exclude
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "item_id")
-    Item item;
+    @JoinColumn(name = "owner_id", nullable = false)
+    private User owner;
 
+    @JsonIgnore
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id")
-    User author;
+    @JoinColumn(name = "request_id")
+    private ItemRequest request;
+
 }

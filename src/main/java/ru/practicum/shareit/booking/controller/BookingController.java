@@ -1,4 +1,4 @@
-package ru.practicum.shareit.booking;
+package ru.practicum.shareit.booking.controller;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.shareit.booking.dto.BookingNewDto;
 import ru.practicum.shareit.booking.dto.BookingOutputDto;
+import ru.practicum.shareit.booking.model.BookingState;
 import ru.practicum.shareit.booking.service.BookingService;
 
 import java.util.List;

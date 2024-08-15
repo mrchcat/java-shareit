@@ -4,8 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exception.IdNotFoundException;
-import ru.practicum.shareit.item.Comment;
-import ru.practicum.shareit.item.Item;
 import ru.practicum.shareit.item.dto.CommentDTOMapper;
 import ru.practicum.shareit.item.dto.CommentNewDTO;
 import ru.practicum.shareit.item.dto.CommentOutputDTO;
@@ -13,12 +11,15 @@ import ru.practicum.shareit.item.dto.ItemDTOMapper;
 import ru.practicum.shareit.item.dto.ItemNewDTO;
 import ru.practicum.shareit.item.dto.ItemOutputDTO;
 import ru.practicum.shareit.item.dto.ItemUpdateDTO;
+import ru.practicum.shareit.item.model.Comment;
+import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.CommentRepository;
 import ru.practicum.shareit.item.repository.ItemRepository;
-import ru.practicum.shareit.user.User;
+import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 import ru.practicum.shareit.utils.Validator;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
@@ -43,7 +44,7 @@ public class ItemServiceImpl implements ItemService {
         Item itemToCreate = itemDTOMapper.fromNewDTO(user, itemNewDTO);
         Item createdItem = itemRepository.save(itemToCreate);
         log.info("{} was created", createdItem);
-        return itemDTOMapper.toDTO(createdItem);
+        return itemDTOMapper.toDTO(userId,createdItem);
     }
 
     @Override
@@ -55,7 +56,7 @@ public class ItemServiceImpl implements ItemService {
         Item itemToUpdate = fillInFieldsToUpdate(oldItem, itemUpdateDTO);
         Item updatedItem = itemRepository.save(itemToUpdate);
         log.info("{} was updated", updatedItem);
-        return itemDTOMapper.toDTO(itemToUpdate);
+        return itemDTOMapper.toDTO(userId, itemToUpdate);
     }
 
     private Item fillInFieldsToUpdate(Item item, ItemUpdateDTO itemUpdateDTO) {
@@ -75,9 +76,9 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemOutputDTO getItem(long itemId) {
+    public ItemOutputDTO getItem(long userId, long itemId) {
         Optional<Item> item = itemRepository.findById(itemId);
-        return item.map(itemDTOMapper::toDTO).orElseThrow(
+        return item.map(i->itemDTOMapper.toDTO(userId,i)).orElseThrow(
                 () -> new IdNotFoundException("Item with id=" + itemId + " not found"));
     }
 
@@ -86,18 +87,18 @@ public class ItemServiceImpl implements ItemService {
         validator.validateIfUserNotExists(userId);
         Collection<Item> items = itemRepository.getAllItems(userId);
         return items.stream()
-                .map(itemDTOMapper::toDTO)
+                .map(i->itemDTOMapper.toDTO(userId,i))
                 .toList();
     }
 
     @Override
-    public Collection<ItemOutputDTO> searchItems(String text) {
+    public Collection<ItemOutputDTO> searchItems(long userId,String text) {
         if (isNull(text) || text.isBlank()) {
             return Collections.emptyList();
         }
         Collection<Item> items = itemRepository.searchItems(text);
         return items.stream()
-                .map(itemDTOMapper::toDTO)
+                .map(i->itemDTOMapper.toDTO(userId,i))
                 .toList();
     }
 
@@ -108,8 +109,9 @@ public class ItemServiceImpl implements ItemService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IdNotFoundException(String.format("User with id=%d does not exists", userId)));
         validator.validateIfUserBookedItem(userId, itemId);
-        Comment comment= CommentDTOMapper.fromNewDTO(user, item, commentDto);
+        Comment comment= CommentDTOMapper.fromNewDTO(user, item, LocalDateTime.now(), commentDto);
         Comment newComment=commentRepository.save(comment);
+        log.info("{} was added", newComment);
         return CommentDTOMapper.toDTO(newComment);
     }
 }

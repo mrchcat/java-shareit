@@ -1,4 +1,4 @@
-package ru.practicum.shareit.item;
+package ru.practicum.shareit.item.controller;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
@@ -51,23 +51,25 @@ public class ItemController {
 
     @GetMapping("/{itemId}")
     @ResponseStatus(HttpStatus.OK)
-    public ItemOutputDTO getItem(@PathVariable @Positive long itemId) {
-        log.info("Received request to get item with id= {}", itemId);
-        return itemService.getItem(itemId);
+    public ItemOutputDTO getItem(@RequestHeader("X-Sharer-User-Id") @Positive long userId,
+                                 @PathVariable @Positive long itemId) {
+        log.info("Received request from userId={} to get item with id= {}", userId, itemId);
+        return itemService.getItem(userId, itemId);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Collection<ItemOutputDTO> getAllItems(@RequestHeader("X-Sharer-User-Id") @Positive long userId) {
-        log.info("Received request to get all items");
+        log.info("Received request from userId={} to get all items", userId);
         return itemService.getAllItems(userId);
     }
 
     @GetMapping("/search")
     @ResponseStatus(HttpStatus.OK)
-    public Collection<ItemOutputDTO> searchItems(@RequestParam("text") String text) {
-        log.info("Received request to get items with text={}", text);
-        return itemService.searchItems(text);
+    public Collection<ItemOutputDTO> searchItems(@RequestHeader("X-Sharer-User-Id") @Positive long userId,
+                                                 @RequestParam("text") String text) {
+        log.info("Received request from userId={} to get items with text={}", userId, text);
+        return itemService.searchItems(userId, text);
     }
 
     @PostMapping("/{itemId}/comment")
@@ -75,7 +77,7 @@ public class ItemController {
     public CommentOutputDTO addComment(@RequestHeader("X-Sharer-User-Id") @Positive long userId,
                                        @PathVariable @Positive long itemId,
                                        @RequestBody @Valid CommentNewDTO comment) {
-        log.info("Received request to add comment {} to item with id={}", comment, itemId);
+        log.info("Received request from userId={} to add comment {} to itemId={}", userId, comment, itemId);
         return itemService.addComment(userId, itemId, comment);
     }
 }

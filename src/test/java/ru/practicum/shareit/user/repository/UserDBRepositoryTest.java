@@ -8,7 +8,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ContextConfiguration;
-import ru.practicum.shareit.user.User;
+import ru.practicum.shareit.user.model.User;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

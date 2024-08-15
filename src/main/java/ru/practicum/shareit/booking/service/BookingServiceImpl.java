@@ -3,25 +3,25 @@ package ru.practicum.shareit.booking.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.practicum.shareit.booking.Booking;
-import ru.practicum.shareit.booking.BookingState;
 import ru.practicum.shareit.booking.dto.BookingDTOMapper;
 import ru.practicum.shareit.booking.dto.BookingNewDto;
 import ru.practicum.shareit.booking.dto.BookingOutputDto;
+import ru.practicum.shareit.booking.model.Booking;
+import ru.practicum.shareit.booking.model.BookingState;
 import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.exception.IdNotFoundException;
 import ru.practicum.shareit.exception.InternalServerException;
-import ru.practicum.shareit.item.Item;
+import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.ItemRepository;
-import ru.practicum.shareit.user.User;
+import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 import ru.practicum.shareit.utils.Validator;
 
 import java.util.List;
 
-import static ru.practicum.shareit.booking.BookingStatus.APPROVED;
-import static ru.practicum.shareit.booking.BookingStatus.REJECTED;
-import static ru.practicum.shareit.booking.BookingStatus.WAITING;
+import static ru.practicum.shareit.booking.model.BookingStatus.APPROVED;
+import static ru.practicum.shareit.booking.model.BookingStatus.REJECTED;
+import static ru.practicum.shareit.booking.model.BookingStatus.WAITING;
 
 @Service
 @Slf4j
@@ -45,6 +45,7 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = BookingDTOMapper.fromNewDTO(user, item, newBooking);
         booking.setStatus(WAITING);
         Booking createdBooking = bookingRepository.save(booking);
+        log.info("{} was created", createdBooking);
         return BookingDTOMapper.toDTO(createdBooking);
     }
 
@@ -57,6 +58,7 @@ public class BookingServiceImpl implements BookingService {
         }
         booking.setStatus(isApproved ? APPROVED : REJECTED);
         Booking savedBooking = bookingRepository.save(booking);
+        log.info("User saved answer {} for {} ", isApproved, savedBooking);
         return BookingDTOMapper.toDTO(savedBooking);
     }
 
