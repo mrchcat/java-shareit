@@ -31,6 +31,7 @@ public class BookingServiceImpl implements BookingService {
     private final ItemRepository itemRepository;
     private final BookingRepository bookingRepository;
     private final Validator validator;
+    private final BookingDTOMapper bookingDTOMapper;
 
     @Override
     public BookingDto createBooking(long userId, BookingCreateDto newBooking) {
@@ -46,7 +47,7 @@ public class BookingServiceImpl implements BookingService {
         booking.setStatus(WAITING);
         Booking createdBooking = bookingRepository.save(booking);
         log.info("{} was created", createdBooking);
-        return BookingDTOMapper.toDTO(createdBooking);
+        return bookingDTOMapper.toDTO(createdBooking);
     }
 
     @Override
@@ -59,7 +60,7 @@ public class BookingServiceImpl implements BookingService {
         booking.setStatus(isApproved ? APPROVED : REJECTED);
         Booking savedBooking = bookingRepository.save(booking);
         log.info("User saved answer {} for {} ", isApproved, savedBooking);
-        return BookingDTOMapper.toDTO(savedBooking);
+        return bookingDTOMapper.toDTO(savedBooking);
     }
 
     @Override
@@ -69,7 +70,7 @@ public class BookingServiceImpl implements BookingService {
         if ((booking.getBooker().getId() != userId) && (booking.getItem().getOwner().getId() != userId)) {
             throw new IdNotFoundException(String.format("User with id=%d is not owner or booker for booking with id=%d", userId, bookingId));
         }
-        return BookingDTOMapper.toDTO(booking);
+        return bookingDTOMapper.toDTO(booking);
     }
 
     @Override
@@ -84,7 +85,7 @@ public class BookingServiceImpl implements BookingService {
             case WAITING -> bookingRepository.getWaitingBookingsOfUser(userId);
         };
         return bookings.stream()
-                .map(BookingDTOMapper::toDTO)
+                .map(bookingDTOMapper::toDTO)
                 .toList();
     }
 
@@ -100,7 +101,7 @@ public class BookingServiceImpl implements BookingService {
             case WAITING -> bookingRepository.getWaitingBookingsForUserItems(userId);
         };
         return bookings.stream()
-                .map(BookingDTOMapper::toDTO)
+                .map(bookingDTOMapper::toDTO)
                 .toList();
     }
 }

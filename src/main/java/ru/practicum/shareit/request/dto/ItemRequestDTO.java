@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
-public class ItemRequestOutputDTO {
+public class ItemRequestDTO {
     private long id;
     private String description;
     private UserDTO requestor;

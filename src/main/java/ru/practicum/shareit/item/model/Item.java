@@ -42,15 +42,15 @@ public class Item {
     private boolean available;
 
     @ToString.Exclude
-    @JsonIgnore
+//    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
 
-    @JsonIgnore
+//    @JsonIgnore
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "request_id")
+    @JoinColumn(name = "request_id", nullable = true)
     private ItemRequest request;
 
 }
