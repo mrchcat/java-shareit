@@ -10,7 +10,7 @@ import org.hibernate.validator.constraints.Length;
 @Getter
 @Setter
 @ToString
-public class ItemNewDTO {
+public class ItemCreateDTO {
     @NotBlank(message = "name is empty")
     @Length(max = 50, message = "name must be less than 50 digits")
     private String name;

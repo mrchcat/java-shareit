@@ -5,8 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exception.IdNotFoundException;
 import ru.practicum.shareit.user.dto.UserDTOMapper;
-import ru.practicum.shareit.user.dto.UserNewDTO;
-import ru.practicum.shareit.user.dto.UserOutputDTO;
+import ru.practicum.shareit.user.dto.UserCreateDTO;
+import ru.practicum.shareit.user.dto.UserDTO;
 import ru.practicum.shareit.user.dto.UserUpdateDTO;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
@@ -25,16 +25,16 @@ public class UserServiceImpl implements UserService {
     private final Validator validator;
 
     @Override
-    public UserOutputDTO createUser(UserNewDTO userNewDTO) {
-        validator.validateIfEmailIsUnique(userNewDTO.getEmail());
-        User userToCreate = UserDTOMapper.fromNewDTO(userNewDTO);
+    public UserDTO createUser(UserCreateDTO userCreateDTO) {
+        validator.validateIfEmailIsUnique(userCreateDTO.getEmail());
+        User userToCreate = UserDTOMapper.fromNewDTO(userCreateDTO);
         User createdUser = userRepository.save(userToCreate);
         log.info("{} was created", createdUser);
         return UserDTOMapper.toDTO(createdUser);
     }
 
     @Override
-    public UserOutputDTO updateUser(long userId, UserUpdateDTO updateUserDTO) {
+    public UserDTO updateUser(long userId, UserUpdateDTO updateUserDTO) {
         validator.validateIfUserNotExists(userId);
         String email = updateUserDTO.getEmail();
         if (nonNull(updateUserDTO.getEmail())) {
@@ -69,14 +69,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserOutputDTO getUser(long userId) {
+    public UserDTO getUser(long userId) {
         Optional<User> user = userRepository.findById(userId);
         return user.map(UserDTOMapper::toDTO).orElseThrow(
                 () -> new IdNotFoundException("User with id=" + userId + " not found"));
     }
 
     @Override
-    public Collection<UserOutputDTO> getAllUsers() {
+    public Collection<UserDTO> getAllUsers() {
         Collection<User> users = userRepository.findAll();
         return users.stream()
                 .map(UserDTOMapper::toDTO)

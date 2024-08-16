@@ -15,7 +15,7 @@ import org.hibernate.validator.constraints.Length;
 @Builder
 @ToString
 @EqualsAndHashCode
-public class UserNewDTO {
+public class UserCreateDTO {
     @NotBlank(message = "name can not be empty")
     @Length(min = 1, max = 50, message = "name must have 1-50 digits")
     private String name;

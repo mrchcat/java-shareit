@@ -12,12 +12,12 @@ import java.util.Collection;
 @Setter
 @Builder
 @ToString
-public class ItemOutputDTOWithBookings {
+public class ItemDTOWithBookings {
     private long id;
     private String name;
     private String description;
     private boolean available;
-    private Collection<CommentOutputDTO> comments;
+    private Collection<CommentDTO> comments;
     private LocalDateTime lastBooking;
     private LocalDateTime nextBooking;
 }

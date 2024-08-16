@@ -7,8 +7,8 @@ import ru.practicum.shareit.user.model.User;
 import java.time.LocalDateTime;
 
 public class CommentDTOMapper {
-    public static CommentOutputDTO toDTO(Comment comment) {
-        return CommentOutputDTO.builder()
+    public static CommentDTO toDTO(Comment comment) {
+        return CommentDTO.builder()
                 .id(comment.getId())
                 .text(comment.getText())
                 .authorName(comment.getAuthor().getName())
@@ -16,7 +16,7 @@ public class CommentDTOMapper {
                 .build();
     }
 
-    public static Comment fromNewDTO(User user, Item item, LocalDateTime creationTime, CommentNewDTO dto) {
+    public static Comment fromNewDTO(User user, Item item, LocalDateTime creationTime, CommentCreateDTO dto) {
         return Comment.builder()
                 .text(dto.getText())
                 .item(item)

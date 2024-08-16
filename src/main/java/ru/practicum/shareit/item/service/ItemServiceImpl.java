@@ -5,12 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exception.IdNotFoundException;
 import ru.practicum.shareit.item.dto.CommentDTOMapper;
-import ru.practicum.shareit.item.dto.CommentNewDTO;
-import ru.practicum.shareit.item.dto.CommentOutputDTO;
+import ru.practicum.shareit.item.dto.CommentCreateDTO;
+import ru.practicum.shareit.item.dto.CommentDTO;
 import ru.practicum.shareit.item.dto.ItemDTOMapper;
-import ru.practicum.shareit.item.dto.ItemNewDTO;
-import ru.practicum.shareit.item.dto.ItemOutputDTO;
-import ru.practicum.shareit.item.dto.ItemOutputDTOWithBookings;
+import ru.practicum.shareit.item.dto.ItemCreateDTO;
+import ru.practicum.shareit.item.dto.ItemDTO;
+import ru.practicum.shareit.item.dto.ItemDTOWithBookings;
 import ru.practicum.shareit.item.dto.ItemUpdateDTO;
 import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
@@ -39,17 +39,17 @@ public class ItemServiceImpl implements ItemService {
     private final ItemDTOMapper itemDTOMapper;
 
     @Override
-    public ItemOutputDTO createItem(long userId, ItemNewDTO itemNewDTO) {
+    public ItemDTO createItem(long userId, ItemCreateDTO itemCreateDTO) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IdNotFoundException(String.format("User with id=%d does not exists", userId)));
-        Item itemToCreate = itemDTOMapper.fromNewDTO(user, itemNewDTO);
+        Item itemToCreate = itemDTOMapper.fromNewDTO(user, itemCreateDTO);
         Item createdItem = itemRepository.save(itemToCreate);
         log.info("{} was created", createdItem);
         return itemDTOMapper.toDTO(createdItem);
     }
 
     @Override
-    public ItemOutputDTO updateItem(long userId, long itemId, ItemUpdateDTO itemUpdateDTO) {
+    public ItemDTO updateItem(long userId, long itemId, ItemUpdateDTO itemUpdateDTO) {
         Item oldItem = itemRepository.findById(itemId)
                 .orElseThrow(() -> new IdNotFoundException(String.format("Item with id=%d does not exists", itemId)));
         validator.validateIfUserOwnsItem(userId, itemId);
@@ -77,14 +77,14 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemOutputDTOWithBookings getItem(long userId, long itemId) {
+    public ItemDTOWithBookings getItem(long userId, long itemId) {
         Optional<Item> item = itemRepository.findById(itemId);
         return item.map(i -> itemDTOMapper.toDTOWithBookings(userId, i)).orElseThrow(
                 () -> new IdNotFoundException("Item with id=" + itemId + " not found"));
     }
 
     @Override
-    public Collection<ItemOutputDTOWithBookings> getAllItems(long userId) {
+    public Collection<ItemDTOWithBookings> getAllItems(long userId) {
         validator.validateIfUserNotExists(userId);
         Collection<Item> items = itemRepository.getAllItems(userId);
         return items.stream()
@@ -93,7 +93,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Collection<ItemOutputDTO> searchItems(String text) {
+    public Collection<ItemDTO> searchItems(String text) {
         if (isNull(text) || text.isBlank()) {
             return Collections.emptyList();
         }
@@ -104,7 +104,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public CommentOutputDTO addComment(long userId, long itemId, CommentNewDTO commentDto) {
+    public CommentDTO addComment(long userId, long itemId, CommentCreateDTO commentDto) {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new IdNotFoundException(String.format("Item with id=%d does not exists", itemId)));
         User user = userRepository.findById(userId)

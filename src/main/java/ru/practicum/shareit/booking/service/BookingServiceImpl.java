@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.dto.BookingDTOMapper;
-import ru.practicum.shareit.booking.dto.BookingNewDto;
-import ru.practicum.shareit.booking.dto.BookingOutputDto;
+import ru.practicum.shareit.booking.dto.BookingCreateDto;
+import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.model.BookingState;
 import ru.practicum.shareit.booking.repository.BookingRepository;
@@ -33,7 +33,7 @@ public class BookingServiceImpl implements BookingService {
     private final Validator validator;
 
     @Override
-    public BookingOutputDto createBooking(long userId, BookingNewDto newBooking) {
+    public BookingDto createBooking(long userId, BookingCreateDto newBooking) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IdNotFoundException(String.format("User with id=%d does not exists", userId)));
         long itemId = newBooking.getItemId();
@@ -50,7 +50,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public BookingOutputDto answerBookingRequest(long userId, long bookingId, boolean isApproved) {
+    public BookingDto answerBookingRequest(long userId, long bookingId, boolean isApproved) {
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new IdNotFoundException(String.format("Booking with id=%d does not exists", bookingId)));
         if (booking.getItem().getOwner().getId() != userId) {
@@ -63,7 +63,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public BookingOutputDto getBookingStatus(long userId, long bookingId) {
+    public BookingDto getBookingStatus(long userId, long bookingId) {
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new IdNotFoundException(String.format("Booking with id=%d does not exists", bookingId)));
         if ((booking.getBooker().getId() != userId) && (booking.getItem().getOwner().getId() != userId)) {
@@ -73,7 +73,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingOutputDto> getAllBookingsOfUser(long userId, BookingState state) {
+    public List<BookingDto> getAllBookingsOfUser(long userId, BookingState state) {
         validator.validateIfUserNotExists(userId);
         List<Booking> bookings = switch (state) {
             case ALL -> bookingRepository.getAllBookingsOfUser(userId);
@@ -89,7 +89,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingOutputDto> getAllBookingsForUserItems(long userId, BookingState state) {
+    public List<BookingDto> getAllBookingsForUserItems(long userId, BookingState state) {
         validator.validateIfUserNotExists(userId);
         List<Booking> bookings = switch (state) {
             case ALL -> bookingRepository.getAllBookingsForUserItems(userId);

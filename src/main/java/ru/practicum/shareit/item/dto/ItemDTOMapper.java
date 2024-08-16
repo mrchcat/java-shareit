@@ -14,13 +14,13 @@ public class ItemDTOMapper {
     private final CommentRepository commentRepository;
     private final BookingRepository bookingRepository;
 
-    public ItemOutputDTO toDTO(Item item) {
+    public ItemDTO toDTO(Item item) {
         var commentsDTO = commentRepository
                 .getCommentsByItem(item.getId())
                 .stream()
                 .map(CommentDTOMapper::toDTO)
                 .toList();
-        return ItemOutputDTO.builder()
+        return ItemDTO.builder()
                 .id(item.getId())
                 .name(item.getName())
                 .description(item.getDescription())
@@ -29,7 +29,7 @@ public class ItemDTOMapper {
                 .build();
     }
 
-    public ItemOutputDTOWithBookings toDTOWithBookings(long userId, Item item) {
+    public ItemDTOWithBookings toDTOWithBookings(long userId, Item item) {
         var commentsDTO = commentRepository
                 .getCommentsByItem(item.getId())
                 .stream()
@@ -37,7 +37,7 @@ public class ItemDTOMapper {
                 .toList();
         var lastBooking = bookingRepository.getLastBookingForItemOwnedByUser(userId, item.getId());
         var nextBooking = bookingRepository.getNextBookingForItemOwnedByUser(userId, item.getId());
-        return ItemOutputDTOWithBookings.builder()
+        return ItemDTOWithBookings.builder()
                 .id(item.getId())
                 .name(item.getName())
                 .description(item.getDescription())
@@ -48,11 +48,11 @@ public class ItemDTOMapper {
                 .build();
     }
 
-    public Item fromNewDTO(User user, ItemNewDTO itemNewDTO) {
+    public Item fromNewDTO(User user, ItemCreateDTO itemCreateDTO) {
         return Item.builder()
-                .name(itemNewDTO.getName())
-                .description(itemNewDTO.getDescription())
-                .available(itemNewDTO.getAvailable())
+                .name(itemCreateDTO.getName())
+                .description(itemCreateDTO.getDescription())
+                .available(itemCreateDTO.getAvailable())
                 .owner(user)
                 .build();
     }

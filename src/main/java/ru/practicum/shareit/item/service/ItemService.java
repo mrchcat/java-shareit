@@ -1,24 +1,24 @@
 package ru.practicum.shareit.item.service;
 
-import ru.practicum.shareit.item.dto.CommentNewDTO;
-import ru.practicum.shareit.item.dto.CommentOutputDTO;
-import ru.practicum.shareit.item.dto.ItemNewDTO;
-import ru.practicum.shareit.item.dto.ItemOutputDTO;
-import ru.practicum.shareit.item.dto.ItemOutputDTOWithBookings;
+import ru.practicum.shareit.item.dto.CommentCreateDTO;
+import ru.practicum.shareit.item.dto.CommentDTO;
+import ru.practicum.shareit.item.dto.ItemCreateDTO;
+import ru.practicum.shareit.item.dto.ItemDTO;
+import ru.practicum.shareit.item.dto.ItemDTOWithBookings;
 import ru.practicum.shareit.item.dto.ItemUpdateDTO;
 
 import java.util.Collection;
 
 public interface ItemService {
-    ItemOutputDTO createItem(long userId, ItemNewDTO itemNewDTO);
+    ItemDTO createItem(long userId, ItemCreateDTO itemCreateDTO);
 
-    ItemOutputDTO updateItem(long userId, long itemId, ItemUpdateDTO itemUpdateDTO);
+    ItemDTO updateItem(long userId, long itemId, ItemUpdateDTO itemUpdateDTO);
 
-    ItemOutputDTOWithBookings getItem(long userId, long itemId);
+    ItemDTOWithBookings getItem(long userId, long itemId);
 
-    Collection<ItemOutputDTOWithBookings> getAllItems(long userId);
+    Collection<ItemDTOWithBookings> getAllItems(long userId);
 
-    Collection<ItemOutputDTO> searchItems(String text);
+    Collection<ItemDTO> searchItems(String text);
 
-    CommentOutputDTO addComment(long userId, long itemId, CommentNewDTO comment);
+    CommentDTO addComment(long userId, long itemId, CommentCreateDTO comment);
 }

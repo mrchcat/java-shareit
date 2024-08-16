@@ -3,7 +3,7 @@ package ru.practicum.shareit.request.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import ru.practicum.shareit.user.dto.UserOutputDTO;
+import ru.practicum.shareit.user.dto.UserDTO;
 
 import java.time.LocalDateTime;
 
@@ -13,6 +13,6 @@ import java.time.LocalDateTime;
 public class ItemRequestOutputDTO {
     private long id;
     private String description;
-    private UserOutputDTO requestor;
+    private UserDTO requestor;
     private LocalDateTime created;
 }

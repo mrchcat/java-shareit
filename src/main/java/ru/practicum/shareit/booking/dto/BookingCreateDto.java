@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-public class BookingNewDto {
+public class BookingCreateDto {
     @Positive
     private long itemId;
     @FutureOrPresent

@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import ru.practicum.shareit.booking.dto.BookingNewDto;
-import ru.practicum.shareit.booking.dto.BookingOutputDto;
+import ru.practicum.shareit.booking.dto.BookingCreateDto;
+import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.model.BookingState;
 import ru.practicum.shareit.booking.service.BookingService;
 
@@ -32,30 +32,30 @@ public class BookingController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BookingOutputDto createBooking(@RequestHeader("X-Sharer-User-Id") @Positive long userId,
-                                          @RequestBody @Valid BookingNewDto booking) {
+    public BookingDto createBooking(@RequestHeader("X-Sharer-User-Id") @Positive long userId,
+                                    @RequestBody @Valid BookingCreateDto booking) {
         log.info("Received request from user id={} for booking with parameters {}", userId, booking);
         return bookingService.createBooking(userId, booking);
     }
 
     @PatchMapping("/{bookingId}")
-    public BookingOutputDto answerBookingRequest(@RequestHeader("X-Sharer-User-Id") @Positive long userId,
-                                     @PathVariable("bookingId") @Positive long bookingId,
-                                     @RequestParam(name = "approved") boolean isApproved) {
+    public BookingDto answerBookingRequest(@RequestHeader("X-Sharer-User-Id") @Positive long userId,
+                                           @PathVariable("bookingId") @Positive long bookingId,
+                                           @RequestParam(name = "approved") boolean isApproved) {
         log.info("Received request from user id={} to save answer \"{}\" for booking with id={}", userId, isApproved, bookingId);
         return bookingService.answerBookingRequest(userId, bookingId, isApproved);
     }
 
     @GetMapping("/{bookingId}")
-    public BookingOutputDto getBookingStatus(@RequestHeader("X-Sharer-User-Id") @Positive long userId,
-                                             @PathVariable("bookingId") @Positive long bookingId) {
+    public BookingDto getBookingStatus(@RequestHeader("X-Sharer-User-Id") @Positive long userId,
+                                       @PathVariable("bookingId") @Positive long bookingId) {
         log.info("Received request from user id={} for status of booking with id={}", userId, bookingId);
         return bookingService.getBookingStatus(userId, bookingId);
     }
 
     @GetMapping
-    public List<BookingOutputDto> getAllBookingsByUser(@RequestHeader("X-Sharer-User-Id") @Positive long userId,
-                                                       @RequestParam(name = "state",
+    public List<BookingDto> getAllBookingsByUser(@RequestHeader("X-Sharer-User-Id") @Positive long userId,
+                                                 @RequestParam(name = "state",
                                                                required = false,
                                                                defaultValue = "ALL") @NotNull BookingState state) {
         log.info("Received request to get all bookings from user id={} and state {}", userId, state);
@@ -63,8 +63,8 @@ public class BookingController {
     }
 
     @GetMapping("/owner")
-    public List<BookingOutputDto> getAllBookingsForUserItems(@RequestHeader("X-Sharer-User-Id") @Positive long userId,
-                                                             @RequestParam(name = "state",
+    public List<BookingDto> getAllBookingsForUserItems(@RequestHeader("X-Sharer-User-Id") @Positive long userId,
+                                                       @RequestParam(name = "state",
                                                                      required = false,
                                                                      defaultValue = "ALL") @NotNull BookingState state) {
         log.info("Received request to get all bookings for items of user id={} and state {}", userId, state);

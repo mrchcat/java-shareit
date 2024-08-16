@@ -9,10 +9,10 @@ import java.util.Collection;
 @Getter
 @Setter
 @Builder
-public class ItemOutputDTO {
+public class ItemDTO {
     private long id;
     private String name;
     private String description;
     private boolean available;
-    private Collection<CommentOutputDTO> comments;
+    private Collection<CommentDTO> comments;
 }

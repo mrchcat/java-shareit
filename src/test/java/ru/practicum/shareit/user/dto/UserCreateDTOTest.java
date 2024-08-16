@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class UserNewDTOTest {
+class UserCreateDTOTest {
     static ValidatorFactory validatorFactory;
     static Validator validator;
 
@@ -29,21 +29,21 @@ class UserNewDTOTest {
     @Test
     @DisplayName("Validation: add NewUserDTO with too long name")
     void testValidationBadName() {
-        UserNewDTO userNewDTO = UserNewDTO.builder()
+        UserCreateDTO userCreateDTO = UserCreateDTO.builder()
                 .name("K".repeat(100))
                 .email("www@sss.ru")
                 .build();
-        assertFalse(validator.validate(userNewDTO).isEmpty());
+        assertFalse(validator.validate(userCreateDTO).isEmpty());
     }
 
     @Test
     @DisplayName("Validation: add NewUserDTO with correct name")
     void testValidationGoodName() {
-        UserNewDTO userNewDTO = UserNewDTO.builder()
+        UserCreateDTO userCreateDTO = UserCreateDTO.builder()
                 .name("K".repeat(10))
                 .email("www@sss.ru")
                 .build();
-        assertTrue(validator.validate(userNewDTO).isEmpty());
+        assertTrue(validator.validate(userCreateDTO).isEmpty());
     }
 
 }
