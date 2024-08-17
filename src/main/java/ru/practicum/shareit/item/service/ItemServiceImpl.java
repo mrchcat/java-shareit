@@ -3,6 +3,8 @@ package ru.practicum.shareit.item.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exception.IdNotFoundException;
 import ru.practicum.shareit.item.dto.CommentCreateDTO;
 import ru.practicum.shareit.item.dto.CommentDTO;
@@ -39,6 +41,7 @@ public class ItemServiceImpl implements ItemService {
     private final ItemDTOMapper itemDTOMapper;
 
     @Override
+    @Transactional
     public ItemDTO createItem(long userId, ItemCreateDTO itemCreateDTO) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IdNotFoundException(String.format("User with id=%d does not exists", userId)));
@@ -49,6 +52,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional
     public ItemDTO updateItem(long userId, long itemId, ItemUpdateDTO itemUpdateDTO) {
         Item oldItem = itemRepository.findById(itemId)
                 .orElseThrow(() -> new IdNotFoundException(String.format("Item with id=%d does not exists", itemId)));
@@ -77,6 +81,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ)
     public ItemDTOWithBookings getItem(long userId, long itemId) {
         Optional<Item> item = itemRepository.findById(itemId);
         return item.map(i -> itemDTOMapper.toDTOWithBookings(userId, i)).orElseThrow(
@@ -84,16 +89,15 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ)
     public Collection<ItemDTOWithBookings> getAllItems(long userId) {
         validator.validateIfUserNotExists(userId);
         Collection<Item> items = itemRepository.getAllItems(userId);
-//        return items.stream()
-//                .map(i -> itemDTOMapper.toDTOWithBookings(userId, i))
-//                .toList();
         return itemDTOMapper.toDTOWithBookings(userId, items);
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ)
     public Collection<ItemDTO> searchItems(String text) {
         if (isNull(text) || text.isBlank()) {
             return Collections.emptyList();
@@ -103,6 +107,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional
     public CommentDTO addComment(long userId, long itemId, CommentCreateDTO commentDto) {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new IdNotFoundException(String.format("Item with id=%d does not exists", itemId)));

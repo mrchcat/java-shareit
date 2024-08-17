@@ -3,6 +3,8 @@ package ru.practicum.shareit.booking.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.dto.BookingCreateDto;
 import ru.practicum.shareit.booking.dto.BookingDTOMapper;
 import ru.practicum.shareit.booking.dto.BookingDto;
@@ -34,6 +36,7 @@ public class BookingServiceImpl implements BookingService {
     private final BookingDTOMapper bookingDTOMapper;
 
     @Override
+    @Transactional
     public BookingDto createBooking(long userId, BookingCreateDto newBooking) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IdNotFoundException(String.format("User with id=%d does not exists", userId)));
@@ -50,12 +53,15 @@ public class BookingServiceImpl implements BookingService {
         return bookingDTOMapper.toDTO(createdBooking);
     }
 
+    @Transactional
     @Override
     public BookingDto answerBookingRequest(long userId, long bookingId, boolean isApproved) {
         Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new IdNotFoundException(String.format("Booking with id=%d does not exists", bookingId)));
+                .orElseThrow(() -> new IdNotFoundException(
+                        String.format("Booking with id=%d does not exists", bookingId)));
         if (booking.getItem().getOwner().getId() != userId) {
-            throw new InternalServerException(String.format("User with id=%d does not have booking with id=%d", userId, bookingId));
+            throw new InternalServerException(
+                    String.format("User with id=%d does not have booking with id=%d", userId, bookingId));
         }
         booking.setStatus(isApproved ? APPROVED : REJECTED);
         Booking savedBooking = bookingRepository.save(booking);
@@ -64,16 +70,20 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ)
     public BookingDto getBookingStatus(long userId, long bookingId) {
         Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new IdNotFoundException(String.format("Booking with id=%d does not exists", bookingId)));
-        if ((booking.getBooker().getId() != userId) && (booking.getItem().getOwner().getId() != userId)) {
-            throw new IdNotFoundException(String.format("User with id=%d is not owner or booker for booking with id=%d", userId, bookingId));
+                .orElseThrow(() -> new IdNotFoundException(
+                        String.format("Booking with id=%d does not exists", bookingId)));
+        if (booking.getBooker().getId() != userId && booking.getItem().getOwner().getId() != userId) {
+            throw new IdNotFoundException(
+                    String.format("User with id=%d is not owner or booker for booking with id=%d", userId, bookingId));
         }
         return bookingDTOMapper.toDTO(booking);
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ)
     public List<BookingDto> getAllBookingsOfUser(long userId, BookingState state) {
         validator.validateIfUserNotExists(userId);
         List<Booking> bookings = switch (state) {
@@ -90,6 +100,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ)
     public List<BookingDto> getAllBookingsForUserItems(long userId, BookingState state) {
         validator.validateIfUserNotExists(userId);
         List<Booking> bookings = switch (state) {
