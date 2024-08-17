@@ -24,9 +24,10 @@ logging:
         orm.jpa: INFO
         transaction: INFO
         transaction.interceptor: INFO
-        orm.jpa.JpaTransactionManager: DEBUG
+        orm.jpa.JpaTransactionManager: INFO
       hibernate:
         SQL: DEBUG
+        orm.jdbc.bind: TRACE
       my: INFO
   pattern:
     console: "%d{HH:mm:ss} %-5level %logger{36} - %msg%n"

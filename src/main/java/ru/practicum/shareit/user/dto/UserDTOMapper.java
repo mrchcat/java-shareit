@@ -11,7 +11,7 @@ public class UserDTOMapper {
                 .build();
     }
 
-    public static User fromNewDTO(UserCreateDTO userDTO) {
+    public static User fromCreateDTO(UserCreateDTO userDTO) {
         return User.builder()
                 .name(userDTO.getName())
                 .email(userDTO.getEmail())

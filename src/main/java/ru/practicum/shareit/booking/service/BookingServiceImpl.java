@@ -3,8 +3,8 @@ package ru.practicum.shareit.booking.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.practicum.shareit.booking.dto.BookingDTOMapper;
 import ru.practicum.shareit.booking.dto.BookingCreateDto;
+import ru.practicum.shareit.booking.dto.BookingDTOMapper;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.model.BookingState;
@@ -43,7 +43,7 @@ public class BookingServiceImpl implements BookingService {
         if (!item.isAvailable()) {
             throw new InternalServerException(String.format("Item with id=%d is not available", itemId));
         }
-        Booking booking = BookingDTOMapper.fromNewDTO(user, item, newBooking);
+        Booking booking = BookingDTOMapper.fromCreateDTO(user, item, newBooking);
         booking.setStatus(WAITING);
         Booking createdBooking = bookingRepository.save(booking);
         log.info("{} was created", createdBooking);

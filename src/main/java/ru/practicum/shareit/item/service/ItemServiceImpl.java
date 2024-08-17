@@ -4,12 +4,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exception.IdNotFoundException;
-import ru.practicum.shareit.item.dto.CommentDTOMapper;
 import ru.practicum.shareit.item.dto.CommentCreateDTO;
 import ru.practicum.shareit.item.dto.CommentDTO;
-import ru.practicum.shareit.item.dto.ItemDTOMapper;
+import ru.practicum.shareit.item.dto.CommentDTOMapper;
 import ru.practicum.shareit.item.dto.ItemCreateDTO;
 import ru.practicum.shareit.item.dto.ItemDTO;
+import ru.practicum.shareit.item.dto.ItemDTOMapper;
 import ru.practicum.shareit.item.dto.ItemDTOWithBookings;
 import ru.practicum.shareit.item.dto.ItemUpdateDTO;
 import ru.practicum.shareit.item.model.Comment;
@@ -42,7 +42,7 @@ public class ItemServiceImpl implements ItemService {
     public ItemDTO createItem(long userId, ItemCreateDTO itemCreateDTO) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IdNotFoundException(String.format("User with id=%d does not exists", userId)));
-        Item itemToCreate = itemDTOMapper.fromNewDTO(user, itemCreateDTO);
+        Item itemToCreate = itemDTOMapper.fromCreateDTO(user, itemCreateDTO);
         Item createdItem = itemRepository.save(itemToCreate);
         log.info("{} was created", createdItem);
         return itemDTOMapper.toDTO(createdItem);
@@ -87,9 +87,10 @@ public class ItemServiceImpl implements ItemService {
     public Collection<ItemDTOWithBookings> getAllItems(long userId) {
         validator.validateIfUserNotExists(userId);
         Collection<Item> items = itemRepository.getAllItems(userId);
-        return items.stream()
-                .map(i -> itemDTOMapper.toDTOWithBookings(userId, i))
-                .toList();
+//        return items.stream()
+//                .map(i -> itemDTOMapper.toDTOWithBookings(userId, i))
+//                .toList();
+        return itemDTOMapper.toDTOWithBookings(userId, items);
     }
 
     @Override
@@ -98,9 +99,7 @@ public class ItemServiceImpl implements ItemService {
             return Collections.emptyList();
         }
         Collection<Item> items = itemRepository.searchItems(text);
-        return items.stream()
-                .map(itemDTOMapper::toDTO)
-                .toList();
+        return itemDTOMapper.toDTO(items);
     }
 
     @Override
@@ -110,7 +109,7 @@ public class ItemServiceImpl implements ItemService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IdNotFoundException(String.format("User with id=%d does not exists", userId)));
         validator.validateIfUserBookedItem(userId, itemId);
-        Comment comment = CommentDTOMapper.fromNewDTO(user, item, LocalDateTime.now(), commentDto);
+        Comment comment = CommentDTOMapper.fromCreateDTO(user, item, LocalDateTime.now(), commentDto);
         Comment newComment = commentRepository.save(comment);
         log.info("{} was added", newComment);
         return CommentDTOMapper.toDTO(newComment);

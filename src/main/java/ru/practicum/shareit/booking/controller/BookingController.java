@@ -57,7 +57,7 @@ public class BookingController {
     public List<BookingDto> getAllBookingsByUser(@RequestHeader("X-Sharer-User-Id") @Positive long userId,
                                                  @RequestParam(name = "state",
                                                                required = false,
-                                                               defaultValue = "ALL") @NotNull BookingState state) {
+                                                               defaultValue = "ALL") BookingState state) {
         log.info("Received request to get all bookings from user id={} and state {}", userId, state);
         return bookingService.getAllBookingsOfUser(userId, state);
     }

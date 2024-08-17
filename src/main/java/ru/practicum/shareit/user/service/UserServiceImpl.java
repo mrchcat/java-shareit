@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exception.IdNotFoundException;
-import ru.practicum.shareit.user.dto.UserDTOMapper;
 import ru.practicum.shareit.user.dto.UserCreateDTO;
 import ru.practicum.shareit.user.dto.UserDTO;
+import ru.practicum.shareit.user.dto.UserDTOMapper;
 import ru.practicum.shareit.user.dto.UserUpdateDTO;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO createUser(UserCreateDTO userCreateDTO) {
         validator.validateIfEmailIsUnique(userCreateDTO.getEmail());
-        User userToCreate = UserDTOMapper.fromNewDTO(userCreateDTO);
+        User userToCreate = UserDTOMapper.fromCreateDTO(userCreateDTO);
         User createdUser = userRepository.save(userToCreate);
         log.info("{} was created", createdUser);
         return UserDTOMapper.toDTO(createdUser);

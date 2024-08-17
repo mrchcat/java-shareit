@@ -16,10 +16,10 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Entity
 @Table(name = "users")
 public class User {
     @Id

@@ -15,7 +15,7 @@ import ru.practicum.shareit.user.model.User;
 public class BookingDTOMapper {
     private final ItemDTOMapper itemDTOMapper;
 
-    public static Booking fromNewDTO(User user, Item item, BookingCreateDto booking) {
+    public static Booking fromCreateDTO(User user, Item item, BookingCreateDto booking) {
         return Booking.builder()
                 .start(booking.getStart())
                 .end(booking.getEnd())
@@ -25,8 +25,8 @@ public class BookingDTOMapper {
     }
 
     public BookingDto toDTO(Booking booking) {
-        ItemDTO itemDTO= itemDTOMapper.toDTO(booking.getItem());
-        UserDTO userDTO= UserDTOMapper.toDTO(booking.getBooker());
+        ItemDTO itemDTO = itemDTOMapper.toDTO(booking.getItem());
+        UserDTO userDTO = UserDTOMapper.toDTO(booking.getBooker());
         return BookingDto.builder()
                 .id(booking.getId())
                 .start(booking.getStart())
