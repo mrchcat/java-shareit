@@ -1,23 +1,24 @@
 package ru.practicum.shareit.item.repository;
 
-import ru.practicum.shareit.item.Item;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import ru.practicum.shareit.item.model.Item;
 
 import java.util.Collection;
-import java.util.Map;
-import java.util.Optional;
 
-public interface ItemRepository {
+public interface ItemRepository extends JpaRepository<Item, Long> {
 
-    Item createItem(Item item);
-
-    boolean updateItem(long itemId, Map<String, Object> itemFields);
-
-    Optional<Item> getItem(long itemId);
-
+    @Query("SELECT i FROM Item AS i WHERE i.owner.id=:userId")
     Collection<Item> getAllItems(long userId);
 
+    @Query("SELECT i FROM Item AS i " +
+            "WHERE i.available = TRUE " +
+            "AND (LOWER(i.name) like CONCAT('%', LOWER(:text), '%') " +
+            "OR LOWER(i.description) like CONCAT('%', LOWER(:text) , '%'))")
     Collection<Item> searchItems(String text);
 
-    boolean doesUserOwnItem(long userId, long itemId);
-
+    @Query("SELECT CASE WHEN COUNT(i)> 0 THEN TRUE ELSE FALSE END " +
+            "FROM Item AS i " +
+            "WHERE i.id=:itemId AND i.owner.id=:userId")
+    boolean existsByIdAndOwner(long itemId, long userId);
 }

@@ -12,7 +12,8 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import ru.practicum.shareit.user.dto.UserNewDTO;
+import ru.practicum.shareit.user.controller.UserController;
+import ru.practicum.shareit.user.dto.UserCreateDTO;
 import ru.practicum.shareit.user.service.UserService;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -46,7 +47,7 @@ class UserControllerTest {
     @Test
     @DisplayName("check controller for correct create user request")
     void correctUserRequest() throws Exception {
-        UserNewDTO user = UserNewDTO.builder().name("Anna").email("anna@mail.ru").build();
+        UserCreateDTO user = UserCreateDTO.builder().name("Anna").email("anna@mail.ru").build();
         String json = objectMapper.writeValueAsString(user);
         mockMvc.perform(post("/users").contentType("application/json").content(json));
         Mockito.verify(userService).createUser(user);
