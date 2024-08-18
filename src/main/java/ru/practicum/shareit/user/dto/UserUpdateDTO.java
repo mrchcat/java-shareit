@@ -1,6 +1,7 @@
 package ru.practicum.shareit.user.dto;
 
 import jakarta.validation.constraints.Email;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -8,6 +9,7 @@ import org.hibernate.validator.constraints.Length;
 
 @Getter
 @Setter
+@Builder
 @ToString
 public class UserUpdateDTO {
     @Length(min = 1, max = 50, message = "name must have 1-50 digits")

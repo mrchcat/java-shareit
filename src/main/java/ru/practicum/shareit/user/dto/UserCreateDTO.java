@@ -12,8 +12,8 @@ import org.hibernate.validator.constraints.Length;
 
 @Getter
 @Setter
-@Builder
 @ToString
+@Builder
 @EqualsAndHashCode
 public class UserCreateDTO {
     @NotBlank(message = "name can not be empty")
