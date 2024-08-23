@@ -1,13 +1,15 @@
-package ru.practicum.shareit.booking.dto;
+package ru.practicum.shareit.booking.mapper;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import ru.practicum.shareit.booking.dto.BookingCreateDto;
+import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.model.Booking;
-import ru.practicum.shareit.item.dto.ItemDTO;
-import ru.practicum.shareit.item.dto.ItemDTOMapper;
+import ru.practicum.shareit.item.dto.item.ItemDTO;
+import ru.practicum.shareit.item.mapper.ItemDTOMapper;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.dto.UserDTO;
-import ru.practicum.shareit.user.dto.UserDTOMapper;
+import ru.practicum.shareit.user.mapper.UserDTOMapper;
 import ru.practicum.shareit.user.model.User;
 
 @Component

@@ -1,12 +1,18 @@
-package ru.practicum.shareit.item.dto;
+package ru.practicum.shareit.item.mapper;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.repository.BookingRepository;
+import ru.practicum.shareit.item.dto.comment.CommentDTO;
+import ru.practicum.shareit.item.dto.item.ItemCreateDTO;
+import ru.practicum.shareit.item.dto.item.ItemDTO;
+import ru.practicum.shareit.item.dto.item.ItemDTOForRequest;
+import ru.practicum.shareit.item.dto.item.ItemDTOWithBookings;
 import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.CommentRepository;
+import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDateTime;
@@ -24,12 +30,13 @@ public class ItemDTOMapper {
     private final CommentRepository commentRepository;
     private final BookingRepository bookingRepository;
 
-    public Item fromCreateDTO(User user, ItemCreateDTO itemCreateDTO) {
+    public Item fromCreateDTO(User user, ItemCreateDTO itemCreateDTO, ItemRequest request) {
         return Item.builder()
                 .name(itemCreateDTO.getName())
                 .description(itemCreateDTO.getDescription())
                 .available(itemCreateDTO.getAvailable())
                 .owner(user)
+                .request(request)
                 .build();
     }
 
@@ -134,6 +141,14 @@ public class ItemDTOMapper {
         Collection<Booking> allBookings = bookingRepository.getAllNextBooking(userId, itemIds);
         return allBookings.stream()
                 .collect(Collectors.toMap(b -> b.getItem().getId(), Function.identity()));
+    }
+
+    public static ItemDTOForRequest toDTOForRequest(Item item){
+        return ItemDTOForRequest.builder()
+                .id(item.getId())
+                .name(item.getName())
+                .owner_id(item.getOwner().getId())
+                .build();
     }
 
 }

@@ -1,9 +1,10 @@
-package ru.practicum.shareit.item.dto;
+package ru.practicum.shareit.item.dto.item;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import ru.practicum.shareit.item.dto.comment.CommentDTO;
 
 import java.time.LocalDateTime;
 import java.util.Collection;

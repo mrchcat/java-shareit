@@ -1,11 +1,11 @@
 package ru.practicum.shareit.item.service;
 
-import ru.practicum.shareit.item.dto.CommentCreateDTO;
-import ru.practicum.shareit.item.dto.CommentDTO;
-import ru.practicum.shareit.item.dto.ItemCreateDTO;
-import ru.practicum.shareit.item.dto.ItemDTO;
-import ru.practicum.shareit.item.dto.ItemDTOWithBookings;
-import ru.practicum.shareit.item.dto.ItemUpdateDTO;
+import ru.practicum.shareit.item.dto.comment.CommentCreateDTO;
+import ru.practicum.shareit.item.dto.comment.CommentDTO;
+import ru.practicum.shareit.item.dto.item.ItemCreateDTO;
+import ru.practicum.shareit.item.dto.item.ItemDTO;
+import ru.practicum.shareit.item.dto.item.ItemDTOWithBookings;
+import ru.practicum.shareit.item.dto.item.ItemUpdateDTO;
 
 import java.util.Collection;
 

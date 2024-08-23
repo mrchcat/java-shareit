@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.Query;
 import ru.practicum.shareit.item.model.Item;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
@@ -21,4 +23,19 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
             "FROM Item AS i " +
             "WHERE i.id=:itemId AND i.owner.id=:userId")
     boolean existsByIdAndOwner(long itemId, long userId);
+
+    @Query("""
+            SELECT i
+            FROM Item AS i
+            WHERE i.request_id := requestId
+            """)
+    List<Item> findByRequestId(long requestId);
+
+    @Query("""
+            SELECT i
+            FROM Item AS i
+            WHERE i.request_id IN :requestIds
+            """)
+    List<Item> findByRequestId(List<Long> requestIds);
+
 }

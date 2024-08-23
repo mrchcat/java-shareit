@@ -11,6 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -21,6 +22,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
+@Builder
 @Entity
 @Table(name = "requests")
 public class ItemRequest {
@@ -39,5 +41,6 @@ public class ItemRequest {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created", nullable = false)
-    private LocalDateTime created;
+    private LocalDateTime created=LocalDateTime.now();
+
 }

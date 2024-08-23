@@ -3,10 +3,12 @@ package ru.practicum.shareit.user.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exception.IdNotFoundException;
 import ru.practicum.shareit.user.dto.UserCreateDTO;
 import ru.practicum.shareit.user.dto.UserDTO;
-import ru.practicum.shareit.user.dto.UserDTOMapper;
+import ru.practicum.shareit.user.mapper.UserDTOMapper;
 import ru.practicum.shareit.user.dto.UserUpdateDTO;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
@@ -25,6 +27,7 @@ public class UserServiceImpl implements UserService {
     private final Validator validator;
 
     @Override
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public UserDTO createUser(UserCreateDTO userCreateDTO) {
         validator.validateIfEmailIsUnique(userCreateDTO.getEmail());
         User userToCreate = UserDTOMapper.fromCreateDTO(userCreateDTO);
@@ -34,6 +37,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public UserDTO updateUser(long userId, UserUpdateDTO updateUserDTO) {
         validator.validateIfUserNotExists(userId);
         String email = updateUserDTO.getEmail();

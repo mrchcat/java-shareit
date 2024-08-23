@@ -6,18 +6,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exception.IdNotFoundException;
-import ru.practicum.shareit.item.dto.CommentCreateDTO;
-import ru.practicum.shareit.item.dto.CommentDTO;
-import ru.practicum.shareit.item.dto.CommentDTOMapper;
-import ru.practicum.shareit.item.dto.ItemCreateDTO;
-import ru.practicum.shareit.item.dto.ItemDTO;
-import ru.practicum.shareit.item.dto.ItemDTOMapper;
-import ru.practicum.shareit.item.dto.ItemDTOWithBookings;
-import ru.practicum.shareit.item.dto.ItemUpdateDTO;
+import ru.practicum.shareit.item.dto.comment.CommentCreateDTO;
+import ru.practicum.shareit.item.dto.comment.CommentDTO;
+import ru.practicum.shareit.item.mapper.CommentDTOMapper;
+import ru.practicum.shareit.item.dto.item.ItemCreateDTO;
+import ru.practicum.shareit.item.dto.item.ItemDTO;
+import ru.practicum.shareit.item.mapper.ItemDTOMapper;
+import ru.practicum.shareit.item.dto.item.ItemDTOWithBookings;
+import ru.practicum.shareit.item.dto.item.ItemUpdateDTO;
 import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.CommentRepository;
 import ru.practicum.shareit.item.repository.ItemRepository;
+import ru.practicum.shareit.request.model.ItemRequest;
+import ru.practicum.shareit.request.repository.ItemRequestRepository;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 import ru.practicum.shareit.utils.Validator;
@@ -37,22 +39,29 @@ public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
+    private final ItemRequestRepository requestRepository;
     private final Validator validator;
     private final ItemDTOMapper itemDTOMapper;
 
     @Override
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public ItemDTO createItem(long userId, ItemCreateDTO itemCreateDTO) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IdNotFoundException(String.format("User with id=%d does not exists", userId)));
-        Item itemToCreate = itemDTOMapper.fromCreateDTO(user, itemCreateDTO);
+        Long request_id = itemCreateDTO.getRequest_id();
+        ItemRequest request = null;
+        if (request_id != null) {
+            request = requestRepository.findById(request_id)
+                    .orElseThrow(() -> new IdNotFoundException(String.format("Item request with id=%d does not exists", request_id)));
+        }
+        Item itemToCreate = itemDTOMapper.fromCreateDTO(user, itemCreateDTO, request);
         Item createdItem = itemRepository.save(itemToCreate);
         log.info("{} was created", createdItem);
         return itemDTOMapper.toDTO(createdItem);
     }
 
     @Override
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public ItemDTO updateItem(long userId, long itemId, ItemUpdateDTO itemUpdateDTO) {
         Item oldItem = itemRepository.findById(itemId)
                 .orElseThrow(() -> new IdNotFoundException(String.format("Item with id=%d does not exists", itemId)));
@@ -107,7 +116,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public CommentDTO addComment(long userId, long itemId, CommentCreateDTO commentDto) {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new IdNotFoundException(String.format("Item with id=%d does not exists", itemId)));

@@ -1,17 +1,16 @@
 package ru.practicum.shareit.request.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import ru.practicum.shareit.user.dto.UserDTO;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @Builder
-public class ItemRequestDTO {
-    private long id;
+public class ItemRequestCreateDTO {
+    @NotBlank
     private String description;
-    private LocalDateTime created;
 }
