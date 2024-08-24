@@ -36,7 +36,7 @@ public class BaseClient {
         return makeAndSendRequest(HttpMethod.GET, path, userId, parameters, null);
     }
 
-    protected ResponseEntity<Object> get(String path, Long userId,@Nullable Map<String, Object> parameters, Object body) {
+    protected ResponseEntity<Object> get(String path, Long userId, @Nullable Map<String, Object> parameters, Object body) {
         return makeAndSendRequest(HttpMethod.GET, path, userId, null, body);
     }
 
@@ -68,12 +68,12 @@ public class BaseClient {
         return makeAndSendRequest(HttpMethod.PATCH, path, userId, parameters, body);
     }
 
-    protected ResponseEntity<Object> delete(String path) {
-        return delete(path, null, null);
+    protected void delete(String path) {
+        delete(path, null, null);
     }
 
-    protected ResponseEntity<Object> delete(String path, Long userId, @Nullable Map<String, Object> parameters) {
-        return makeAndSendRequest(HttpMethod.DELETE, path, userId, parameters, null);
+    protected void delete(String path, Long userId, @Nullable Map<String, Object> parameters) {
+        makeAndSendRequest(HttpMethod.DELETE, path, userId, parameters, null);
     }
 
     private <T> ResponseEntity<Object> makeAndSendRequest(HttpMethod method, String path, Long userId,
@@ -83,11 +83,11 @@ public class BaseClient {
         ResponseEntity<Object> shareitServerResponse;
         try {
             if (parameters != null) {
-                MultiValueMap<String,String> multiMap=new LinkedMultiValueMap<>();
-                for(var entry:parameters.entrySet()){
+                MultiValueMap<String, String> multiMap = new LinkedMultiValueMap<>();
+                for (var entry : parameters.entrySet()) {
                     multiMap.add(entry.getKey(), entry.getValue().toString());
                 }
-                String urlTemplate= UriComponentsBuilder
+                String urlTemplate = UriComponentsBuilder
                         .fromPath(path)
                         .queryParams(multiMap)
                         .build()

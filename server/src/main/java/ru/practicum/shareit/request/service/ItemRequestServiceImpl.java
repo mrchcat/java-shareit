@@ -21,7 +21,7 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class ItemRequestServiceImpl implements ItemRequestService{
+public class ItemRequestServiceImpl implements ItemRequestService {
     private final UserRepository userRepository;
     private final ItemRequestRepository requestRepository;
     private final RequestDTOMapper requestDTOMapper;
@@ -32,9 +32,9 @@ public class ItemRequestServiceImpl implements ItemRequestService{
     public ItemRequestDTO createItemRequest(long userId, ItemRequestCreateDTO itemRequestCreateDTO) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IdNotFoundException(String.format("User with id=%d does not exists", userId)));
-        ItemRequest requestToCreate= RequestDTOMapper.fromCreateDTO(user,itemRequestCreateDTO);
-        ItemRequest createdItemRequest=requestRepository.save(requestToCreate);
-        log.info("item request {} was created by user with id={}",createdItemRequest, userId);
+        ItemRequest requestToCreate = RequestDTOMapper.fromCreateDTO(user, itemRequestCreateDTO);
+        ItemRequest createdItemRequest = requestRepository.save(requestToCreate);
+        log.info("item request {} was created by user with id={}", createdItemRequest, userId);
         return RequestDTOMapper.toDTO(createdItemRequest);
     }
 
@@ -42,15 +42,15 @@ public class ItemRequestServiceImpl implements ItemRequestService{
     @Transactional(isolation = Isolation.REPEATABLE_READ, readOnly = true)
     public List<ItemRequestDTOWithAnswers> getUserRequests(long userId) {
         validator.validateIfUserNotExists(userId);
-        List<ItemRequest> requests=requestRepository.findAllByRequestor(userId);
+        List<ItemRequest> requests = requestRepository.findAllByRequestor(userId);
         return requestDTOMapper.toDTOWithAnswers(requests);
     }
 
     @Override
-    @Transactional(isolation = Isolation.REPEATABLE_READ,readOnly = true)
+    @Transactional(isolation = Isolation.REPEATABLE_READ, readOnly = true)
     public List<ItemRequestDTO> getAllRequestsExceptUser(long userId) {
         validator.validateIfUserNotExists(userId);
-        List<ItemRequest> requests=requestRepository.findAllExceptRequestor(userId);
+        List<ItemRequest> requests = requestRepository.findAllExceptRequestor(userId);
         return requests.stream()
                 .map(RequestDTOMapper::toDTO)
                 .toList();
@@ -59,8 +59,8 @@ public class ItemRequestServiceImpl implements ItemRequestService{
     @Override
     @Transactional(readOnly = true)
     public ItemRequestDTOWithAnswers getRequestById(long requestId) {
-        ItemRequest request=requestRepository.findById(requestId)
-                .orElseThrow(()->new IdNotFoundException(
+        ItemRequest request = requestRepository.findById(requestId)
+                .orElseThrow(() -> new IdNotFoundException(
                         (String.format("Item request with id=%d is not available", requestId))));
         return requestDTOMapper.toDTOWithAnswers(request);
     }

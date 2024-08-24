@@ -42,8 +42,8 @@ public class ItemRequestClient extends BaseClient {
 
     @GetMapping("/{requestId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Object> getRequestById(long userId,long requestId) {
-        String path=String.format("/%d",requestId);
-        return get(path,userId);
+    public ResponseEntity<Object> getRequestById(long userId, long requestId) {
+        String path = String.format("/%d", requestId);
+        return get(path, userId);
     }
 }

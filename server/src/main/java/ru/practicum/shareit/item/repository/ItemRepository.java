@@ -17,7 +17,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     Collection<Item> getAllItems(long userId);
 
     @Query("""
-            SELECT i 
+            SELECT i
             FROM Item AS i
             WHERE i.available = TRUE
             AND (LOWER(i.name) like CONCAT('%', LOWER(:text), '%')
@@ -26,7 +26,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     Collection<Item> searchItems(String text);
 
     @Query("""
-            SELECT CASE WHEN COUNT(i)> 0 THEN TRUE ELSE FALSE END 
+            SELECT CASE WHEN COUNT(i)> 0 THEN TRUE ELSE FALSE END
             FROM Item AS i
             WHERE i.id=:itemId AND i.owner.id=:userId
             """)

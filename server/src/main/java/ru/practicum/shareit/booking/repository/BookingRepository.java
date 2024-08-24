@@ -20,8 +20,8 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     List<Booking> getAllBookingsOfUser(long userId);
 
     @Query("""
-            SELECT b FROM Booking AS b 
-            WHERE b.booker.id=:userId 
+            SELECT b FROM Booking AS b
+            WHERE b.booker.id=:userId
             AND b.end<CURRENT_TIMESTAMP
             ORDER BY b.start ASC
             """)
@@ -99,11 +99,11 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     List<Booking> getCurrentBookingsForUserItems(long userId);
 
     @Query("""
-            SELECT b 
-            FROM Booking AS b 
-            JOIN FETCH b.item AS i 
-            WHERE i.owner.id=:userId 
-            AND b.start>CURRENT_TIMESTAMP 
+            SELECT b
+            FROM Booking AS b
+            JOIN FETCH b.item AS i
+            WHERE i.owner.id=:userId
+            AND b.start>CURRENT_TIMESTAMP
             ORDER BY b.start ASC
             """)
     @EntityGraph(attributePaths = {"item", "booker"})

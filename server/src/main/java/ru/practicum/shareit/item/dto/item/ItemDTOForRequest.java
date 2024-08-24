@@ -10,5 +10,5 @@ import lombok.Setter;
 public class ItemDTOForRequest {
     private long id;
     private String name;
-    private long owner_id;
+    private long ownerId;
 }

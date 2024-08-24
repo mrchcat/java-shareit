@@ -65,21 +65,21 @@ public class RequestDTOMapper {
     }
 
     public List<ItemRequestDTOWithAnswers> toDTOWithAnswers(List<ItemRequest> itemRequests) {
-        Map<Long, List<ItemDTOForRequest>> itemMap=getItemMapByRequestId(itemRequests);
+        Map<Long, List<ItemDTOForRequest>> itemMap = getItemMapByRequestId(itemRequests);
         return itemRequests.stream()
                 .map(RequestDTOMapper::toSemiFinishedDTOWithAnswers)
-                .peek(requestDto->requestDto.setItems(itemMap.get(requestDto.getId())))
+                .peek(requestDto -> requestDto.setItems(itemMap.get(requestDto.getId())))
                 .toList();
     }
 
-    private Map<Long, List<ItemDTOForRequest>> getItemMapByRequestId(List<ItemRequest> itemRequests){
-        List<Long> requestIds=itemRequests.stream().map(ItemRequest::getId).toList();
+    private Map<Long, List<ItemDTOForRequest>> getItemMapByRequestId(List<ItemRequest> itemRequests) {
+        List<Long> requestIds = itemRequests.stream().map(ItemRequest::getId).toList();
         List<Item> items = itemRepository.findByRequestId(requestIds);
-        Map<Long, List<ItemDTOForRequest>> map=new HashMap<>();
-        for(Item item:items){
-            long requestId=item.getRequest().getId();
-            if(!map.containsKey(requestId)){
-                map.put(requestId,new ArrayList<>());
+        Map<Long, List<ItemDTOForRequest>> map = new HashMap<>();
+        for (Item item : items) {
+            long requestId = item.getRequest().getId();
+            if (!map.containsKey(requestId)) {
+                map.put(requestId, new ArrayList<>());
             }
             map.get(requestId).add(ItemDTOMapper.toDTOForRequest(item));
         }

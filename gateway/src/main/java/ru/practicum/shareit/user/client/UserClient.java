@@ -24,27 +24,27 @@ public class UserClient extends BaseClient {
     }
 
     public ResponseEntity<Object> createUser(UserCreateDTO user) {
-        String path="";
+        String path = "";
         return post(path, user);
     }
 
-    public ResponseEntity<Object> updateUser(Long userId, UserUpdateDTO user){
-        String path=String.format("/%d", userId);
+    public ResponseEntity<Object> updateUser(Long userId, UserUpdateDTO user) {
+        String path = String.format("/%d", userId);
         return patch(path, user);
     }
 
-    public void deleteUser(Integer userId){
-        String path=String.format("/%d", userId);
+    public void deleteUser(Integer userId) {
+        String path = String.format("/%d", userId);
         delete(path);
     }
 
-    public ResponseEntity<Object> getUser(Long userId){
-        String path=String.format("/%d", userId);
+    public ResponseEntity<Object> getUser(Long userId) {
+        String path = String.format("/%d", userId);
         return get(path);
     }
 
-    public ResponseEntity<Object> getAllUsers(){
-        String path="";
+    public ResponseEntity<Object> getAllUsers() {
+        String path = "";
         return get(path);
     }
 }

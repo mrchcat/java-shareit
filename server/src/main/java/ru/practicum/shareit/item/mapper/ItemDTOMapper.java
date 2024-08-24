@@ -143,11 +143,11 @@ public class ItemDTOMapper {
                 .collect(Collectors.toMap(b -> b.getItem().getId(), Function.identity()));
     }
 
-    public static ItemDTOForRequest toDTOForRequest(Item item){
+    public static ItemDTOForRequest toDTOForRequest(Item item) {
         return ItemDTOForRequest.builder()
                 .id(item.getId())
                 .name(item.getName())
-                .owner_id(item.getOwner().getId())
+                .ownerId(item.getOwner().getId())
                 .build();
     }
 

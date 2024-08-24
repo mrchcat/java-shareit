@@ -11,7 +11,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     @Query("""
            SELECT k
-           FROM Comment AS k 
+           FROM Comment AS k
            WHERE k.item.id=:itemId
            """)
     @EntityGraph(attributePaths = {"author"})
@@ -19,7 +19,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     @Query("""
            SELECT k
-           FROM Comment AS k 
+           FROM Comment AS k
            WHERE k.item.id IN :itemIds
            """)
     @EntityGraph(attributePaths = {"author"})

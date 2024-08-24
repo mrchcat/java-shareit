@@ -47,7 +47,7 @@ public class Item {
 
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "request_id", nullable = true)
+    @JoinColumn(name = "request_id")
     private ItemRequest request;
 
 }

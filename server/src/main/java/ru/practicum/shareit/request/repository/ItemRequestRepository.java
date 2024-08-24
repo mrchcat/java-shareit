@@ -12,7 +12,7 @@ public interface ItemRequestRepository extends JpaRepository<ItemRequest, Long> 
 
     Optional<ItemRequest> findById(long requestId);
 
-    @Query(""" 
+    @Query("""
             SELECT ir
             FROM ItemRequest AS ir
             WHERE ir.requestor.id=:userId
