@@ -1,3 +1,3 @@
 # java-shareit
 
-![Database schema](src/main/resources/ER.png)
+![Database schema](server/src/main/resources/ER.png)
