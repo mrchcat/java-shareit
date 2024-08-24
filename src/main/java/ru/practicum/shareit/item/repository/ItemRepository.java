@@ -6,7 +6,6 @@ import ru.practicum.shareit.item.model.Item;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
@@ -27,15 +26,15 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     @Query("""
             SELECT i
             FROM Item AS i
-            WHERE i.request_id := requestId
+            WHERE i.request.id = :requestId
             """)
     List<Item> findByRequestId(long requestId);
 
     @Query("""
             SELECT i
             FROM Item AS i
-            WHERE i.request_id IN :requestIds
+            WHERE i.request.id IN :requestIds
             """)
-    List<Item> findByRequestId(List<Long> requestIds);
+    List<Item> findByRequestId(Collection<Long> requestIds);
 
 }

@@ -154,5 +154,5 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             "AND b.start > CURRENT_TIMESTAMP " +
             "AND b.status != 'REJECTED'")
     @EntityGraph(attributePaths = {"item"})
-    List<Booking> getAllNextBooking(long userId, List<Long> itemIds);
+    List<Booking> getAllNextBooking(long userId, Collection<Long> itemIds);
 }

@@ -44,8 +44,8 @@ public class ItemRequestController {
 
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
-    public List<ItemRequestDTO> getAllRequests(@RequestHeader("X-Sharer-User-Id") @Positive long userId) {
-        log.info("Received request from userId={} to get item requests of all users", userId);
+    public List<ItemRequestDTO> getAllRequestsExceptUser(@RequestHeader("X-Sharer-User-Id") @Positive long userId) {
+        log.info("Received request from userId={} to get item requests of all users except his/her", userId);
         return itemRequestService.getAllRequestsExceptUser(userId);
     }
 

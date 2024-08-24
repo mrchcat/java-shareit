@@ -2,9 +2,6 @@ package ru.practicum.shareit.request.mapper;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.practicum.shareit.exception.IdNotFoundException;
-import ru.practicum.shareit.exception.InternalServerException;
-import ru.practicum.shareit.item.dto.item.ItemDTO;
 import ru.practicum.shareit.item.dto.item.ItemDTOForRequest;
 import ru.practicum.shareit.item.mapper.ItemDTOMapper;
 import ru.practicum.shareit.item.model.Item;
@@ -22,9 +19,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -50,7 +44,7 @@ public class RequestDTOMapper {
     }
 
 
-    private static ItemRequestDTOWithAnswers toSemiFinishedDTOWithAnsweres(ItemRequest itemRequest) {
+    private static ItemRequestDTOWithAnswers toSemiFinishedDTOWithAnswers(ItemRequest itemRequest) {
         return ItemRequestDTOWithAnswers.builder()
                 .id(itemRequest.getId())
                 .description(itemRequest.getDescription())
@@ -60,19 +54,20 @@ public class RequestDTOMapper {
     }
 
     public ItemRequestDTOWithAnswers toDTOWithAnswers(ItemRequest itemRequest) {
-        ItemRequestDTOWithAnswers request = toSemiFinishedDTOWithAnsweres(itemRequest);
-        List<Item> items = itemRepository.findByRequestId(itemRequest.getId());
-        List<ItemDTOForRequest> itemDTOs = items.stream()
+        ItemRequestDTOWithAnswers request = toSemiFinishedDTOWithAnswers(itemRequest);
+        List<ItemDTOForRequest> requestedItemsDTO = itemRepository
+                .findByRequestId(itemRequest.getId())
+                .stream()
                 .map(ItemDTOMapper::toDTOForRequest)
                 .toList();
-        request.setItems(itemDTOs);
+        request.setItems(requestedItemsDTO);
         return request;
     }
 
     public List<ItemRequestDTOWithAnswers> toDTOWithAnswers(List<ItemRequest> itemRequests) {
         Map<Long, List<ItemDTOForRequest>> itemMap=getItemMapByRequestId(itemRequests);
         return itemRequests.stream()
-                .map(RequestDTOMapper::toSemiFinishedDTOWithAnsweres)
+                .map(RequestDTOMapper::toSemiFinishedDTOWithAnswers)
                 .peek(requestDto->requestDto.setItems(itemMap.get(requestDto.getId())))
                 .toList();
     }

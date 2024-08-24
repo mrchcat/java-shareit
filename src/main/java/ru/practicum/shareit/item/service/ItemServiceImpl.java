@@ -8,12 +8,12 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exception.IdNotFoundException;
 import ru.practicum.shareit.item.dto.comment.CommentCreateDTO;
 import ru.practicum.shareit.item.dto.comment.CommentDTO;
-import ru.practicum.shareit.item.mapper.CommentDTOMapper;
 import ru.practicum.shareit.item.dto.item.ItemCreateDTO;
 import ru.practicum.shareit.item.dto.item.ItemDTO;
-import ru.practicum.shareit.item.mapper.ItemDTOMapper;
 import ru.practicum.shareit.item.dto.item.ItemDTOWithBookings;
 import ru.practicum.shareit.item.dto.item.ItemUpdateDTO;
+import ru.practicum.shareit.item.mapper.CommentDTOMapper;
+import ru.practicum.shareit.item.mapper.ItemDTOMapper;
 import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.CommentRepository;
@@ -52,11 +52,12 @@ public class ItemServiceImpl implements ItemService {
         ItemRequest request = null;
         if (request_id != null) {
             request = requestRepository.findById(request_id)
-                    .orElseThrow(() -> new IdNotFoundException(String.format("Item request with id=%d does not exists", request_id)));
+                    .orElseThrow(() -> new IdNotFoundException(
+                            String.format("Item request with id=%d does not exists", request_id)));
         }
         Item itemToCreate = itemDTOMapper.fromCreateDTO(user, itemCreateDTO, request);
         Item createdItem = itemRepository.save(itemToCreate);
-        log.info("{} was created", createdItem);
+        log.info("Item {} was created", createdItem);
         return itemDTOMapper.toDTO(createdItem);
     }
 

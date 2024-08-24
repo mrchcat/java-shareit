@@ -16,9 +16,7 @@ import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 import ru.practicum.shareit.utils.Validator;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -36,12 +34,12 @@ public class ItemRequestServiceImpl implements ItemRequestService{
                 .orElseThrow(() -> new IdNotFoundException(String.format("User with id=%d does not exists", userId)));
         ItemRequest requestToCreate= RequestDTOMapper.fromCreateDTO(user,itemRequestCreateDTO);
         ItemRequest createdItemRequest=requestRepository.save(requestToCreate);
-        log.info("item request {} was created",createdItemRequest);
+        log.info("item request {} was created by user with id={}",createdItemRequest, userId);
         return RequestDTOMapper.toDTO(createdItemRequest);
     }
 
     @Override
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Transactional(isolation = Isolation.REPEATABLE_READ, readOnly = true)
     public List<ItemRequestDTOWithAnswers> getUserRequests(long userId) {
         validator.validateIfUserNotExists(userId);
         List<ItemRequest> requests=requestRepository.findAllByRequestor(userId);
@@ -49,6 +47,7 @@ public class ItemRequestServiceImpl implements ItemRequestService{
     }
 
     @Override
+    @Transactional(isolation = Isolation.REPEATABLE_READ,readOnly = true)
     public List<ItemRequestDTO> getAllRequestsExceptUser(long userId) {
         validator.validateIfUserNotExists(userId);
         List<ItemRequest> requests=requestRepository.findAllExceptRequestor(userId);
@@ -58,6 +57,7 @@ public class ItemRequestServiceImpl implements ItemRequestService{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ItemRequestDTOWithAnswers getRequestById(long requestId) {
         ItemRequest request=requestRepository.findById(requestId)
                 .orElseThrow(()->new IdNotFoundException(

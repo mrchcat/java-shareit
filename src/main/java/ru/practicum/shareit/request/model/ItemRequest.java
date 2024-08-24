@@ -15,6 +15,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDateTime;
@@ -39,8 +40,8 @@ public class ItemRequest {
     @ToString.Exclude
     private User requestor;
 
+    @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created", nullable = false)
-    private LocalDateTime created=LocalDateTime.now();
-
+    private LocalDateTime created;
 }
