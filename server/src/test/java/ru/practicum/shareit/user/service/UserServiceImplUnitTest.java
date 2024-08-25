@@ -325,7 +325,7 @@ class UserServiceImplUnitTest {
     @Test
     @DisplayName("get users when empty")
     void getUsersWhenEmptyTest() {
-        when(mockUserRepository.findAll()).thenReturn(Collections.EMPTY_LIST);
+        when(mockUserRepository.findAll()).thenReturn(Collections.<User>emptyList());
 
         Collection<UserDTO> returnedUserDTOs = userService.getAllUsers();
 
