@@ -7,12 +7,4 @@ shareit-server:
 logging:
   level:
     org.springframework.web.client.RestTemplate: DEBUG
-    org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod: TRACE
-    org.springframework.boot.actuate.trace.http.HttpTraceRepository: DEBUG
-
-management:
-  trace.http.enabled: true
-  endpoints.web.exposure.include: "*"
-  server.port: 9999
-
-logging.level.org.zalando.logbook: TRACE
+    org.zalando.logbook: TRACE

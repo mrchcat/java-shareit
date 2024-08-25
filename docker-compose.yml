@@ -1,6 +1,3 @@
-networks:
-  backend:
-
 services:
   gateway:
     build: gateway
@@ -46,3 +43,6 @@ services:
       retries: 10
     networks:
       - backend
+
+networks:
+  backend:
