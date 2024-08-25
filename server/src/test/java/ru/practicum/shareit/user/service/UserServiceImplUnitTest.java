@@ -332,7 +332,6 @@ class UserServiceImplUnitTest {
         verify(mockUserRepository, times(1)).findAll();
         verifyNoMoreInteractions(mockValidator, mockUserRepository);
         assertEquals(0, returnedUserDTOs.size());
-        assertTrue(true);
     }
 
 }
