@@ -124,7 +124,7 @@ public class ItemServiceImpl implements ItemService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IdNotFoundException(String.format("User with id=%d does not exists", userId)));
         validator.validateIfUserBookedItem(userId, itemId);
-        Comment comment = CommentDTOMapper.fromCreateDTO(user, item, LocalDateTime.now(), commentDto);
+        Comment comment = CommentDTOMapper.fromCreateDTO(user, item, commentDto);
         Comment newComment = commentRepository.save(comment);
         log.info("{} was added", newComment);
         return CommentDTOMapper.toDTO(newComment);

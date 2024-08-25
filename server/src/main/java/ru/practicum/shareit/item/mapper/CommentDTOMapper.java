@@ -18,12 +18,11 @@ public class CommentDTOMapper {
                 .build();
     }
 
-    public static Comment fromCreateDTO(User user, Item item, LocalDateTime creationTime, CommentCreateDTO dto) {
+    public static Comment fromCreateDTO(User user, Item item, CommentCreateDTO dto) {
         return Comment.builder()
                 .text(dto.getText())
                 .item(item)
                 .author(user)
-                .created(creationTime)
                 .build();
     }
 }

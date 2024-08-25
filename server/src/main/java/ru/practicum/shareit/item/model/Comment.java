@@ -15,6 +15,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDateTime;
@@ -43,6 +44,7 @@ public class Comment {
     @JoinColumn(name = "author_id")
     User author;
 
+    @CreationTimestamp
     @Column(name = "creation_time", nullable = false)
     private LocalDateTime created;
 }
