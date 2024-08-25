@@ -21,7 +21,7 @@ class BookingControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private final String userHeaderName ="X-Sharer-User-Id";
+    private final String userHeaderName = "X-Sharer-User-Id";
 
     @Test
     @DisplayName("create new booking")
