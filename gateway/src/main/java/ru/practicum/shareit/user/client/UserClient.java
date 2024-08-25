@@ -25,12 +25,12 @@ public class UserClient extends BaseClient {
 
     public ResponseEntity<Object> createUser(UserCreateDTO user) {
         String path = "";
-        return post(path, user);
+        return post(path, null, null, user);
     }
 
     public ResponseEntity<Object> updateUser(Long userId, UserUpdateDTO user) {
         String path = String.format("/%d", userId);
-        return patch(path, user);
+        return patch(path, null, null, user);
     }
 
     public void deleteUser(Integer userId) {
@@ -40,11 +40,11 @@ public class UserClient extends BaseClient {
 
     public ResponseEntity<Object> getUser(Long userId) {
         String path = String.format("/%d", userId);
-        return get(path);
+        return get(path, null, null);
     }
 
     public ResponseEntity<Object> getAllUsers() {
         String path = "";
-        return get(path);
+        return get(path, null, null);
     }
 }

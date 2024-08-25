@@ -11,6 +11,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
@@ -24,78 +25,42 @@ public class BaseClient {
         this.rest = rest;
     }
 
-    protected ResponseEntity<Object> get(String path) {
-        return get(path, null, null);
+    protected ResponseEntity<Object> get(String path, Long userId, @Nullable Map<String, String> query) {
+        return makeAndSendRequest(HttpMethod.GET, path, userId, query, null);
     }
 
-    protected ResponseEntity<Object> get(String path, long userId) {
-        return get(path, userId, null);
+    protected <T> ResponseEntity<Object> post(String path, Long userId, @Nullable Map<String, String> query, T body) {
+        return makeAndSendRequest(HttpMethod.POST, path, userId, query, body);
     }
 
-    protected ResponseEntity<Object> get(String path, Long userId, @Nullable Map<String, Object> parameters) {
-        return makeAndSendRequest(HttpMethod.GET, path, userId, parameters, null);
-    }
-
-    protected ResponseEntity<Object> get(String path, Long userId, @Nullable Map<String, Object> parameters, Object body) {
-        return makeAndSendRequest(HttpMethod.GET, path, userId, null, body);
-    }
-
-    protected <T> ResponseEntity<Object> post(String path, T body) {
-        return post(path, null, null, body);
-    }
-
-    protected <T> ResponseEntity<Object> post(String path, long userId, T body) {
-        return post(path, userId, null, body);
-    }
-
-    protected <T> ResponseEntity<Object> post(String path, Long userId, @Nullable Map<String, Object> parameters, T body) {
-        return makeAndSendRequest(HttpMethod.POST, path, userId, parameters, body);
-    }
-
-    protected <T> ResponseEntity<Object> put(String path, long userId, @Nullable Map<String, Object> parameters, T body) {
-        return makeAndSendRequest(HttpMethod.PUT, path, userId, parameters, body);
-    }
-
-    protected <T> ResponseEntity<Object> patch(String path, T body) {
-        return patch(path, null, null, body);
-    }
-
-    protected <T> ResponseEntity<Object> patch(String path, long userId, T body) {
-        return patch(path, userId, null, body);
-    }
-
-    protected <T> ResponseEntity<Object> patch(String path, Long userId, @Nullable Map<String, Object> parameters, T body) {
-        return makeAndSendRequest(HttpMethod.PATCH, path, userId, parameters, body);
+    protected <T> ResponseEntity<Object> patch(String path, Long userId, @Nullable Map<String, String> query, T body) {
+        return makeAndSendRequest(HttpMethod.PATCH, path, userId, query, body);
     }
 
     protected void delete(String path) {
-        delete(path, null, null);
+        makeAndSendRequest(HttpMethod.DELETE, path, null, null, null);
     }
 
-    protected void delete(String path, Long userId, @Nullable Map<String, Object> parameters) {
-        makeAndSendRequest(HttpMethod.DELETE, path, userId, parameters, null);
-    }
-
-    private <T> ResponseEntity<Object> makeAndSendRequest(HttpMethod method, String path, Long userId,
-                                                          @Nullable Map<String, Object> parameters, @Nullable T body) {
+    private <T> ResponseEntity<Object> makeAndSendRequest(HttpMethod method,
+                                                          String path,
+                                                          @Nullable Long userId,
+                                                          @Nullable Map<String, String> query,
+                                                          @Nullable T body) {
         HttpEntity<T> requestEntity = new HttpEntity<>(body, defaultHeaders(userId));
-
         ResponseEntity<Object> shareitServerResponse;
         try {
-            if (parameters != null) {
-                MultiValueMap<String, String> multiMap = new LinkedMultiValueMap<>();
-                for (var entry : parameters.entrySet()) {
-                    multiMap.add(entry.getKey(), entry.getValue().toString());
-                }
-                String urlTemplate = UriComponentsBuilder
-                        .fromPath(path)
-                        .queryParams(multiMap)
-                        .build()
-                        .toString();
-                shareitServerResponse = rest.exchange(urlTemplate, method, requestEntity, Object.class);
+            UriComponents uriComponents;
+            if (query == null) {
+                uriComponents = UriComponentsBuilder.fromPath(path).build();
             } else {
-                shareitServerResponse = rest.exchange(path, method, requestEntity, Object.class);
+                MultiValueMap<String, String> queryMap = new LinkedMultiValueMap<>();
+                for (var entry : query.entrySet()) {
+                    queryMap.add(entry.getKey(), entry.getValue());
+                }
+                uriComponents = UriComponentsBuilder.fromPath(path).queryParams(queryMap).build();
             }
+            String uri = uriComponents.toString();
+            shareitServerResponse = rest.exchange(uri, method, requestEntity, Object.class);
         } catch (HttpStatusCodeException e) {
             return ResponseEntity.status(e.getStatusCode()).body(e.getResponseBodyAsByteArray());
         }

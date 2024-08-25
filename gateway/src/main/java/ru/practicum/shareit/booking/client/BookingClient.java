@@ -10,7 +10,6 @@ import ru.practicum.shareit.baseclient.BaseClient;
 import ru.practicum.shareit.booking.dto.BookingCreateDto;
 import ru.practicum.shareit.booking.dto.BookingState;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -28,30 +27,29 @@ public class BookingClient extends BaseClient {
 
     public ResponseEntity<Object> createBooking(long userId, BookingCreateDto booking) {
         String path = "";
-        return post(path, userId, booking);
+        return post(path, userId, null, booking);
     }
 
     public ResponseEntity<Object> answerBookingRequest(long userId, long bookingId, boolean isApproved) {
         String path = String.format("/%d", bookingId);
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("approved", isApproved);
-        return patch(path, userId, parameters, null);
+        Map<String, String> query = Map.of("approved", String.valueOf(isApproved));
+        return patch(path, userId, query, null);
     }
 
     public ResponseEntity<Object> getBookingStatus(long userId, long bookingId) {
         String path = String.format("/%d", bookingId);
-        return get(path, userId);
+        return get(path, userId, null);
     }
 
     public ResponseEntity<Object> getAllBookingsOfUser(long userId, BookingState state) {
         String path = "";
-        Map<String, Object> parameters = Map.of("state", state.name());
-        return get(path, userId, parameters);
+        Map<String, String> query = Map.of("state", state.name());
+        return get(path, userId, query);
     }
 
     public ResponseEntity<Object> getAllBookingsForUserItems(long userId, BookingState state) {
         String path = "/owner";
-        Map<String, Object> parameters = Map.of("state", state.name());
-        return get(path, userId, parameters);
+        Map<String, String> query = Map.of("state", state.name());
+        return get(path, userId, query);
     }
 }

@@ -27,23 +27,23 @@ public class ItemRequestClient extends BaseClient {
 
     public ResponseEntity<Object> createItemRequest(long userId, ItemRequestCreateDTO itemRequestCreateDTO) {
         String path = "";
-        return post(path, userId, itemRequestCreateDTO);
+        return post(path, userId, null,itemRequestCreateDTO);
     }
 
     public ResponseEntity<Object> getUserRequests(long userId) {
         String path = "";
-        return get(path, userId);
+        return get(path, userId,null);
     }
 
     public ResponseEntity<Object> getAllRequestsExceptUser(long userId) {
         String path = "/all";
-        return get(path, userId);
+        return get(path, userId,null);
     }
 
     @GetMapping("/{requestId}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Object> getRequestById(long userId, long requestId) {
         String path = String.format("/%d", requestId);
-        return get(path, userId);
+        return get(path, userId,null);
     }
 }

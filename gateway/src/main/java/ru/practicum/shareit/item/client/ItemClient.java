@@ -26,32 +26,31 @@ public class ItemClient extends BaseClient {
 
     public ResponseEntity<Object> createItem(long userId, ItemCreateDTO itemCreateDTO) {
         String path = "";
-        return post(path, userId, itemCreateDTO);
+        return post(path, userId, null,itemCreateDTO);
     }
 
     public ResponseEntity<Object> updateItem(long userId, long itemId, ItemUpdateDTO itemUpdateDTO) {
         String path = String.format("/%d", itemId);
-        return patch(path, userId, itemUpdateDTO);
+        return patch(path, userId, null,itemUpdateDTO);
     }
 
     public ResponseEntity<Object> getItem(long userId, long itemId) {
         String path = String.format("/%d", itemId);
-        return get(path, userId);
+        return get(path, userId, null);
     }
 
     public ResponseEntity<Object> getAllItems(long userId) {
         String path = "";
-        return get(path, userId);
+        return get(path, userId,null);
     }
 
     public ResponseEntity<Object> searchItems(String text) {
         String path = "/search";
-        return get(path);
+        return get(path,null, null);
     }
 
     public ResponseEntity<Object> addComment(long userId, long itemId, CommentCreateDTO comment) {
         String path = String.format("/%d/comment", itemId);
         return post(path, userId, null, comment);
     }
-
 }
