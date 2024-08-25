@@ -19,7 +19,8 @@ class UserCreateDTODeserTest {
     void deserializeUserCreateDTOTest() throws Exception {
         String name = "Anna";
         String email = "anna@mail.ru";
-        String incomingJson = String.format("""
+        String incomingJson = String.format(
+                """
                 {
                   "name": "%s",
                   "email": "%s"
