@@ -19,13 +19,7 @@ class UserCreateDTODeserTest {
     void deserializeUserCreateDTOTest() throws Exception {
         String name = "Anna";
         String email = "anna@mail.ru";
-        String incomingJson = String.format(
-                """
-                {
-                  "name": "%s",
-                  "email": "%s"
-                }
-                """, name, email);
+        String incomingJson = String.format("{\"name\": \"%s\",\"email\": \"%s\"}", name, email);
         UserCreateDTO expectedObject = new UserCreateDTO(name, email);
         assertThat(json.parse(incomingJson)).usingRecursiveComparison().isEqualTo(expectedObject);
     }
