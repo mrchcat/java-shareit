@@ -38,16 +38,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public UserDTO updateUser(long userId, UserUpdateDTO updateUserDTO) {
+    public UserDTO updateUser(long userId, UserUpdateDTO userUpdateDTO) {
         validator.validateIfUserNotExists(userId);
-        String email = updateUserDTO.getEmail();
-        if (nonNull(updateUserDTO.getEmail())) {
+        String email = userUpdateDTO.getEmail();
+        if (nonNull(userUpdateDTO.getEmail())) {
             validator.validateIfEmailIsUnique(email, userId);
         }
         User oldUser = userRepository.findById(userId)
                 .orElseThrow(() -> new IdNotFoundException(String.format("User with id=%d does not exists", userId)));
 
-        User userToUpdate = fillInFieldsToUpdate(oldUser, updateUserDTO);
+        User userToUpdate = fillInFieldsToUpdate(oldUser, userUpdateDTO);
         User updatedUser = userRepository.save(userToUpdate);
         log.info("{} was updated", updatedUser);
         return UserDTOMapper.toDTO(updatedUser);
