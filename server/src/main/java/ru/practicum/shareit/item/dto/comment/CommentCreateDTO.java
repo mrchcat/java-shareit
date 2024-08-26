@@ -10,5 +10,5 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class CommentCreateDTO {
-    String text;
+    private String text;
 }

@@ -38,7 +38,6 @@ public class RequestDTOMapper {
         return ItemRequestDTO.builder()
                 .id(itemRequest.getId())
                 .description(itemRequest.getDescription())
-//                .requestor(userDTO)
                 .created(itemRequest.getCreated())
                 .build();
     }
@@ -50,7 +49,6 @@ public class RequestDTOMapper {
                 .description(itemRequest.getDescription())
                 .created(itemRequest.getCreated())
                 .build();
-
     }
 
     public ItemRequestDTOWithAnswers toDTOWithAnswers(ItemRequest itemRequest) {

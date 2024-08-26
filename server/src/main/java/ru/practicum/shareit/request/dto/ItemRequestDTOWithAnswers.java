@@ -15,5 +15,5 @@ public class ItemRequestDTOWithAnswers {
     private long id;
     private String description;
     private LocalDateTime created;
-    List<ItemDTOForRequest> items;
+    private List<ItemDTOForRequest> items;
 }
