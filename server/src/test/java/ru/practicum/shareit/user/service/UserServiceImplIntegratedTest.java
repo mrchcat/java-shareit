@@ -41,7 +41,9 @@ public class UserServiceImplIntegratedTest {
         String name = "Andrei";
         String email = "andrew@gmail.com";
         UserCreateDTO userCreateDTO = new UserCreateDTO(name, email);
+
         userService.createUser(userCreateDTO);
+
         TypedQuery<User> getUserQuery = em.createQuery("SELECT u FROM User AS u WHERE u.email=:email", User.class)
                 .setParameter("email", email);
         User savedUser = getUserQuery.getSingleResult();
@@ -227,5 +229,7 @@ public class UserServiceImplIntegratedTest {
     void getUsersWhenEmptyTest() {
         assertEquals(0, userService.getAllUsers().size());
     }
+
+
 }
 

@@ -1,6 +1,8 @@
 package ru.practicum.shareit.item.dto.item;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -13,6 +15,8 @@ import java.util.Collection;
 @Setter
 @Builder
 @ToString
+@AllArgsConstructor
+@EqualsAndHashCode
 public class ItemDTOWithBookings {
     private long id;
     private String name;
