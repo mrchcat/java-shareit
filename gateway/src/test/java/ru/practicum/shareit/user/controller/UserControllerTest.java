@@ -69,6 +69,21 @@ class UserControllerTest {
     }
 
     @Test
+    @DisplayName("update correct user")
+    void updateIncorrectUserTest() throws Exception {
+        Long userId = null;
+        String userName = "Anna";
+        String userEmail = "anna@mail.ru";
+        UserUpdateDTO updateDTO = new UserUpdateDTO(userName, userEmail);
+        String json = objectMapper.writeValueAsString(updateDTO);
+        ResponseEntity<Object> response = new ResponseEntity<>(HttpStatus.OK);
+        when(mockedUserClient.updateUser(userId, updateDTO)).thenReturn(response);
+
+        mockMvc.perform(patch("/users/" + userId).contentType("application/json").content(json))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
     @DisplayName("delete correct user")
     void deleteUserTest() throws Exception {
         long userId = 100L;
@@ -77,6 +92,15 @@ class UserControllerTest {
         verify(mockedUserClient, times(1)).deleteUser(userId);
         verifyNoMoreInteractions(mockedUserClient);
     }
+
+    @Test
+    @DisplayName("delete correct user")
+    void deleteIncorrectUserTest() throws Exception {
+        Long userId = null;
+        mockMvc.perform(delete("/users/" + userId))
+                .andExpect(status().isBadRequest());
+    }
+
 
     @Test
     @DisplayName("get correct user")
@@ -88,6 +112,18 @@ class UserControllerTest {
         mockMvc.perform(get("/users/" + userId))
                 .andExpect(status().isOk());
         verify(mockedUserClient, times(1)).getUser(userId);
+        verifyNoMoreInteractions(mockedUserClient);
+    }
+
+    @Test
+    @DisplayName("get correct user")
+    void getIncorrectUser() throws Exception {
+        Long userId = null;
+        ResponseEntity<Object> response = new ResponseEntity<>(HttpStatus.OK);
+        when(mockedUserClient.getUser(userId)).thenReturn(response);
+        mockMvc.perform(get("/users/" + userId))
+                .andExpect(status().isBadRequest());
+        verify(mockedUserClient, times(0)).getUser(userId);
         verifyNoMoreInteractions(mockedUserClient);
     }
 

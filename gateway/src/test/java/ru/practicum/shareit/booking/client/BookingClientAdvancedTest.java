@@ -1,27 +1,49 @@
 package ru.practicum.shareit.booking.client;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.DefaultUriBuilderFactory;
 import ru.practicum.shareit.booking.dto.BookingCreateDto;
 import ru.practicum.shareit.booking.dto.BookingState;
 
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class BookingClientTest {
+class BookingClientAdvancedTest {
 
     @Mock
     RestTemplate restTemplate;
 
-    private final BookingClient bookingClient =
-            new BookingClient("http://localhost:9090", new RestTemplateBuilder());
+    @Mock
+    RestTemplateBuilder restTemplateBuilder;
+
+    private BookingClient bookingClient;
+
+    @BeforeEach
+    void init(){
+        when(restTemplateBuilder
+                .uriTemplateHandler(new DefaultUriBuilderFactory(anyString()))
+                .requestFactory(() -> new HttpComponentsClientHttpRequestFactory())
+                .build()).thenReturn(restTemplate);
+        bookingClient=new BookingClient("http://localhost:9090", restTemplateBuilder);
+    }
+
 
     @Test
     void createBooking() {
@@ -29,8 +51,15 @@ class BookingClientTest {
         long itemId = 12312;
         BookingCreateDto bookingCreateDto = new BookingCreateDto(itemId, null, null);
         String path = "";
-        assertThrows(Throwable.class, () -> bookingClient.createBooking(userId, bookingCreateDto));
-        assertThrows(Throwable.class, () -> bookingClient.post(path, userId, null, bookingCreateDto));
+        Object body=new Object();
+        ResponseEntity<Object> response=new ResponseEntity<>(body, HttpStatus.CREATED);
+        when(restTemplate.exchange(
+                anyString(),
+                ArgumentMatchers.any(HttpMethod.class),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.<Class<Object>>any()))
+                .thenReturn(response);
+        assertDoesNotThrow(()->bookingClient.createBooking(userId,bookingCreateDto));
     }
 
     @Test
