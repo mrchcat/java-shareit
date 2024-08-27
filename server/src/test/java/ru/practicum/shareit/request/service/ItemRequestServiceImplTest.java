@@ -54,26 +54,26 @@ class ItemRequestServiceImplTest {
 
     @Test
     void getIncorrectUserRequests() {
-        assertThrows(IdNotFoundException.class, ()->itemRequestService.getUserRequests(1L));
+        assertThrows(IdNotFoundException.class, () -> itemRequestService.getUserRequests(1L));
     }
 
     @Test
     void getUserRequests() {
         UserCreateDTO userCreateDTO = new UserCreateDTO("Anna", "anna@mail.ru");
         long userId = userService.createUser(userCreateDTO).getId();
-        List<ItemRequestDTOWithAnswers> answeres= itemRequestService.getUserRequests(userId);
-        assertEquals(0,answeres.size());
+        List<ItemRequestDTOWithAnswers> answeres = itemRequestService.getUserRequests(userId);
+        assertEquals(0, answeres.size());
     }
 
     @Test
     void getAllRequestsExceptIncorrectUser() {
-        assertThrows(IdNotFoundException.class, ()->itemRequestService.getAllRequestsExceptUser(1L));
+        assertThrows(IdNotFoundException.class, () -> itemRequestService.getAllRequestsExceptUser(1L));
     }
 
     @Test
     void getRequestById() {
         UserCreateDTO userCreateDTO = new UserCreateDTO("Anna", "anna@mail.ru");
         long userId = userService.createUser(userCreateDTO).getId();
-        assertThrows(IdNotFoundException.class, ()->itemRequestService.getRequestById(1L));
+        assertThrows(IdNotFoundException.class, () -> itemRequestService.getRequestById(1L));
     }
 }

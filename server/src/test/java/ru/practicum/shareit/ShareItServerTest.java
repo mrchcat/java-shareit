@@ -6,6 +6,6 @@ class ShareItServerTest {
 
     @Test
     void main() {
-        ShareItServer.main(new String[] {});
+        ShareItServer.main(new String[]{});
     }
 }

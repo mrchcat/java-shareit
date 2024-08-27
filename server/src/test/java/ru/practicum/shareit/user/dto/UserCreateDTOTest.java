@@ -8,33 +8,33 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 class UserCreateDTOTest {
 
     @Test
-    void test(){
-        UserCreateDTO dto=new UserCreateDTO("a","a");
-        assertEquals("a",dto.getName());
+    void test() {
+        UserCreateDTO dto = new UserCreateDTO("a", "a");
+        assertEquals("a", dto.getName());
     }
 
     @Test
-    void getterAndSetterTest(){
-        String name="Anna";
-        String email="anna@mail.ru";
+    void getterAndSetterTest() {
+        String name = "Anna";
+        String email = "anna@mail.ru";
 
-        UserCreateDTO dto=new UserCreateDTO();
+        UserCreateDTO dto = new UserCreateDTO();
         dto.setName(name);
         dto.setEmail(email);
 
         assertEquals(name, dto.getName());
-        assertEquals(email,dto.getEmail());
+        assertEquals(email, dto.getEmail());
     }
 
     @Test
     void equalsAndHashCodeTest() {
-        String name="Anna";
-        String email="anna@mail.ru";
+        String name = "Anna";
+        String email = "anna@mail.ru";
 
-        UserCreateDTO dto1=new UserCreateDTO(name, email);
-        UserCreateDTO dto2=new UserCreateDTO(name, email);
-        UserCreateDTO dto3=new UserCreateDTO(name, "other email");
-        UserCreateDTO dto4=new UserCreateDTO("other name", email);
+        UserCreateDTO dto1 = new UserCreateDTO(name, email);
+        UserCreateDTO dto2 = new UserCreateDTO(name, email);
+        UserCreateDTO dto3 = new UserCreateDTO(name, "other email");
+        UserCreateDTO dto4 = new UserCreateDTO("other name", email);
 
         assertEquals(dto1, dto2);
         assertNotEquals(dto1, dto3);

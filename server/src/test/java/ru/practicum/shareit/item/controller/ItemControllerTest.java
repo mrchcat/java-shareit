@@ -159,18 +159,18 @@ class ItemControllerTest {
     void addComment() throws Exception {
         long userId = 21321;
         long itemId = 212;
-        String text="saxsdxa";
-        CommentCreateDTO comment=new CommentCreateDTO(text);
-        String json=objectMapper.writeValueAsString(comment);
-        CommentDTO commentDTO=new CommentDTO(12,text,"ssadsa",LocalDateTime.now());
-        when(itemService.addComment(userId,itemId,comment)).thenReturn(commentDTO);
-        mockMvc.perform(post("/items/"+itemId+"/comment")
+        String text = "saxsdxa";
+        CommentCreateDTO comment = new CommentCreateDTO(text);
+        String json = objectMapper.writeValueAsString(comment);
+        CommentDTO commentDTO = new CommentDTO(12, text, "ssadsa", LocalDateTime.now());
+        when(itemService.addComment(userId, itemId, comment)).thenReturn(commentDTO);
+        mockMvc.perform(post("/items/" + itemId + "/comment")
                         .contentType("application/json")
                         .content(json)
                         .header(userIdHeader, userId))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(12));
-        verify(itemService, times(1)).addComment(userId,itemId,comment);
+        verify(itemService, times(1)).addComment(userId, itemId, comment);
         verifyNoMoreInteractions(itemService);
     }
 }

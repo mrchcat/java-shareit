@@ -70,10 +70,10 @@ class BookingControllerTest {
 
     @Test
     void answerBookingRequest() throws Exception {
-        long userId=12213;
-        long bookingId=1312;
+        long userId = 12213;
+        long bookingId = 1312;
         long itemId = 12312;
-        boolean isApproved=true;
+        boolean isApproved = true;
         LocalDateTime start = LocalDateTime.now();
         LocalDateTime end = start.plusDays(2);
         ItemDTO itemDTO = new ItemDTO(itemId, "sss", "ssss", true, Collections.emptyList());
@@ -81,7 +81,7 @@ class BookingControllerTest {
         BookingDto bookingDto = new BookingDto(itemId, start, end, itemDTO, userDTO, BookingStatus.APPROVED);
         when(bookingService.answerBookingRequest(userId, bookingId, isApproved)).thenReturn(bookingDto);
 
-        mockMvc.perform(patch("/bookings/"+bookingId+"?approved="+isApproved)
+        mockMvc.perform(patch("/bookings/" + bookingId + "?approved=" + isApproved)
                         .contentType("application/json")
                         .header(userIdHeader, userId))
                 .andExpect(status().isOk())
@@ -92,10 +92,10 @@ class BookingControllerTest {
 
     @Test
     void getBookingStatus() throws Exception {
-        long userId=12213;
-        long bookingId=1312;
+        long userId = 12213;
+        long bookingId = 1312;
         long itemId = 12312;
-        boolean isApproved=true;
+        boolean isApproved = true;
         LocalDateTime start = LocalDateTime.now();
         LocalDateTime end = start.plusDays(2);
         ItemDTO itemDTO = new ItemDTO(itemId, "sss", "ssss", true, Collections.emptyList());
@@ -103,7 +103,7 @@ class BookingControllerTest {
         BookingDto bookingDto = new BookingDto(itemId, start, end, itemDTO, userDTO, BookingStatus.APPROVED);
         when(bookingService.getBookingStatus(userId, bookingId)).thenReturn(bookingDto);
 
-        mockMvc.perform(get("/bookings/"+bookingId)
+        mockMvc.perform(get("/bookings/" + bookingId)
                         .header(userIdHeader, userId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(is(itemId), Long.class));
@@ -113,19 +113,19 @@ class BookingControllerTest {
 
     @Test
     void getAllBookingsByUser() throws Exception {
-        long userId=222;
+        long userId = 222;
         LocalDateTime start = LocalDateTime.now();
         LocalDateTime end = start.plusDays(2);
         ItemDTO itemDTO = new ItemDTO(12213, "sss", "ssss", true, Collections.emptyList());
         UserDTO userDTO = new UserDTO(222, "ssss", "sssss");
         BookingDto bookingDto1 = new BookingDto(1212, start, end, itemDTO, userDTO, BookingStatus.APPROVED);
         BookingDto bookingDto2 = new BookingDto(21221, start, end, itemDTO, userDTO, BookingStatus.APPROVED);
-        List<BookingDto> bookingDtos=List.of(bookingDto1,bookingDto2);
-        BookingState state=BookingState.ALL;
+        List<BookingDto> bookingDtos = List.of(bookingDto1, bookingDto2);
+        BookingState state = BookingState.ALL;
 
         when(bookingService.getAllBookingsOfUser(userId, state)).thenReturn(bookingDtos);
 
-        mockMvc.perform(get("/bookings?state="+state.toString())
+        mockMvc.perform(get("/bookings?state=" + state.toString())
                         .header(userIdHeader, userId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(is(2L), Long.class));
@@ -135,19 +135,19 @@ class BookingControllerTest {
 
     @Test
     void getAllBookingsForUserItems() throws Exception {
-        long userId=222;
+        long userId = 222;
         LocalDateTime start = LocalDateTime.now();
         LocalDateTime end = start.plusDays(2);
         ItemDTO itemDTO = new ItemDTO(12213, "sss", "ssss", true, Collections.emptyList());
         UserDTO userDTO = new UserDTO(222, "ssss", "sssss");
         BookingDto bookingDto1 = new BookingDto(1212, start, end, itemDTO, userDTO, BookingStatus.APPROVED);
         BookingDto bookingDto2 = new BookingDto(21221, start, end, itemDTO, userDTO, BookingStatus.APPROVED);
-        List<BookingDto> bookingDtos=List.of(bookingDto1,bookingDto2);
-        BookingState state=BookingState.ALL;
+        List<BookingDto> bookingDtos = List.of(bookingDto1, bookingDto2);
+        BookingState state = BookingState.ALL;
 
         when(bookingService.getAllBookingsForUserItems(userId, state)).thenReturn(bookingDtos);
 
-        mockMvc.perform(get("/bookings/owner?state="+state.toString())
+        mockMvc.perform(get("/bookings/owner?state=" + state.toString())
                         .header(userIdHeader, userId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(is(2L), Long.class));

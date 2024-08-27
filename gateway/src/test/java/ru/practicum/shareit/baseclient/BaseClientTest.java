@@ -29,8 +29,8 @@ class BaseClientTest {
 
     @Test
     public void getTest() {
-        Object body=new Object();
-        ResponseEntity<Object> response=new ResponseEntity<>(body, HttpStatus.CREATED);
+        Object body = new Object();
+        ResponseEntity<Object> response = new ResponseEntity<>(body, HttpStatus.CREATED);
         when(rest.exchange(
                 anyString(),
                 ArgumentMatchers.any(HttpMethod.class),
@@ -42,41 +42,41 @@ class BaseClientTest {
 
     @Test
     public void postTest() {
-        Object body=new Object();
-        ResponseEntity<Object> response=new ResponseEntity<>(body, HttpStatus.CREATED);
+        Object body = new Object();
+        ResponseEntity<Object> response = new ResponseEntity<>(body, HttpStatus.CREATED);
         when(rest.exchange(
                 anyString(),
                 ArgumentMatchers.any(HttpMethod.class),
                 ArgumentMatchers.any(),
                 ArgumentMatchers.<Class<Object>>any()))
                 .thenReturn(response);
-        assertEquals(response, baseClient.post(null, null,null,null));
+        assertEquals(response, baseClient.post(null, null, null, null));
     }
 
     @Test
     public void patchTest() {
-        Object body=new Object();
-        ResponseEntity<Object> response=new ResponseEntity<>(body, HttpStatus.CREATED);
+        Object body = new Object();
+        ResponseEntity<Object> response = new ResponseEntity<>(body, HttpStatus.CREATED);
         when(rest.exchange(
                 anyString(),
                 ArgumentMatchers.any(HttpMethod.class),
                 ArgumentMatchers.any(),
                 ArgumentMatchers.<Class<Object>>any()))
                 .thenReturn(response);
-        assertEquals(response, baseClient.patch(null, null,null,null));
+        assertEquals(response, baseClient.patch(null, null, null, null));
     }
 
     @Test
     public void deleteTest() {
-        Object body=new Object();
-        ResponseEntity<Object> response=new ResponseEntity<>(body, HttpStatus.CREATED);
+        Object body = new Object();
+        ResponseEntity<Object> response = new ResponseEntity<>(body, HttpStatus.CREATED);
         when(rest.exchange(
                 anyString(),
                 ArgumentMatchers.any(HttpMethod.class),
                 ArgumentMatchers.any(),
                 ArgumentMatchers.<Class<Object>>any()))
                 .thenReturn(response);
-        assertDoesNotThrow(()->baseClient.delete(null));
+        assertDoesNotThrow(() -> baseClient.delete(null));
     }
 
     @Test
