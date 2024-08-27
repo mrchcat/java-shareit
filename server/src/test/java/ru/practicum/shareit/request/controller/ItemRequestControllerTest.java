@@ -132,7 +132,5 @@ class ItemRequestControllerTest {
 
         verify(mockItemRequestService, times(1)).getRequestById(requestId);
         verifyNoMoreInteractions(mockItemRequestService);
-
-
     }
 }

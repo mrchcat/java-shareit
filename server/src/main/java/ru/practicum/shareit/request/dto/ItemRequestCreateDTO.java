@@ -9,10 +9,10 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class ItemRequestCreateDTO {
     private String description;
 }

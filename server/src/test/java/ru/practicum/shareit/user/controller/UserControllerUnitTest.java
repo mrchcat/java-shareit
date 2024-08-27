@@ -132,6 +132,6 @@ public class UserControllerUnitTest {
 
         mockMvc.perform(get("/users"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(is(userDTOs.size())));
+                .andExpect(jsonPath("$.length()").value(is((int) userDTOs.size())));
     }
 }

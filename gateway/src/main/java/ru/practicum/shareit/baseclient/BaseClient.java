@@ -19,25 +19,25 @@ import java.util.Map;
 
 @Slf4j
 public class BaseClient {
-    protected final RestTemplate rest;
+    private final RestTemplate rest;
 
     public BaseClient(RestTemplate rest) {
         this.rest = rest;
     }
 
-    protected ResponseEntity<Object> get(String path, Long userId, @Nullable Map<String, String> query) {
+    public ResponseEntity<Object> get(String path, Long userId, @Nullable Map<String, String> query) {
         return makeAndSendRequest(HttpMethod.GET, path, userId, query, null);
     }
 
-    protected <T> ResponseEntity<Object> post(String path, Long userId, @Nullable Map<String, String> query, T body) {
+    public <T> ResponseEntity<Object> post(String path, Long userId, @Nullable Map<String, String> query, T body) {
         return makeAndSendRequest(HttpMethod.POST, path, userId, query, body);
     }
 
-    protected <T> ResponseEntity<Object> patch(String path, Long userId, @Nullable Map<String, String> query, T body) {
+    public <T> ResponseEntity<Object> patch(String path, Long userId, @Nullable Map<String, String> query, T body) {
         return makeAndSendRequest(HttpMethod.PATCH, path, userId, query, body);
     }
 
-    protected void delete(String path) {
+    public void delete(String path) {
         makeAndSendRequest(HttpMethod.DELETE, path, null, null, null);
     }
 

@@ -33,7 +33,7 @@ public class UserClient extends BaseClient {
         return patch(path, null, null, user);
     }
 
-    public void deleteUser(Integer userId) {
+    public void deleteUser(Long userId) {
         String path = String.format("/%d", userId);
         delete(path);
     }
