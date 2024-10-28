@@ -72,3 +72,5 @@ Gateway принимает запросы пользователей, прове
     GET: /items/{itemId}/comment
     Body: {"text": "первый"}      
     header: userId` 
+
+#### Бронирования:
