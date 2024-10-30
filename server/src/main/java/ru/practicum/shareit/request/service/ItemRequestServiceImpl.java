@@ -28,7 +28,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     private final Validator validator;
 
     @Override
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Transactional
     public ItemRequestDTO createItemRequest(long userId, ItemRequestCreateDTO itemRequestCreateDTO) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IdNotFoundException(String.format("User with id=%d does not exists", userId)));
@@ -39,7 +39,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     }
 
     @Override
-    @Transactional(isolation = Isolation.REPEATABLE_READ, readOnly = true)
+    @Transactional(readOnly = true)
     public List<ItemRequestDTOWithAnswers> getUserRequests(long userId) {
         validator.validateIfUserNotExists(userId);
         List<ItemRequest> requests = requestRepository.findAllByRequestor(userId);
@@ -47,7 +47,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     }
 
     @Override
-    @Transactional(isolation = Isolation.REPEATABLE_READ, readOnly = true)
+    @Transactional(readOnly = true)
     public List<ItemRequestDTO> getAllRequestsExceptUser(long userId) {
         validator.validateIfUserNotExists(userId);
         List<ItemRequest> requests = requestRepository.findAllExceptRequestor(userId);

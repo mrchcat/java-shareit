@@ -19,12 +19,12 @@ Gateway принимает запросы пользователей, прове
   1) Добавление пользователя
 
     POST: /users
-    Body: {“name”: “Иван”, email: "ivan@mail.ru""}`
+    Body: {“name”: “Иван”, "email": "ivan@mail.ru""}`
 
   2) Обновление пользователя
 
     PATCH: /users/{userId}
-    Body: {“name”: “Mike”, email: "mike@ya.ru""}
+    Body: {“name”: “Mike”, "email": "mike@ya.ru""}
 
   3) Удаление пользователя
 
@@ -43,13 +43,13 @@ Gateway принимает запросы пользователей, прове
   1) Создать предмет 
 
     POST: /items
-    Body: {“name”: “книга”, description: "Война и мир", available: true, "requestId": 212311}
+    Body: {“name”: “книга”, "description": "Война и мир", "available": true, "requestId": 212311}
     header: userId`    
 
   2) Обновить предмет
    
     PATCH: /items/{itemId}
-    Body: {“name”: “книга”, description: "Война и мир", available: false}
+    Body: {“name”: “книга”, "description": "Война и мир", available: false}
     header: userId`    
 
   3) Получить предмет
@@ -74,3 +74,52 @@ Gateway принимает запросы пользователей, прове
     header: userId` 
 
 #### Бронирования:
+
+  1) Создать бронирование
+
+    POST: /bookings
+    Body: {“itemId”: “213121”, "start": "12-12-2024", "end": 12-12-2025}
+    header: userId`    
+
+  2) Ответить на запрос бронирования
+    
+    PATCH: /bookings/{bookingId}?approved=true
+    header: userId`  
+
+  3) Получить статус бронирования 
+
+    GET: /bookings/{bookingId}
+    header: userId`  
+
+  4) Получить все бронирования конкретного пользователя
+
+    GET: /bookings?state=FUTURE
+    header: userId`  
+
+  5) Получить все бронирования для предметов конкретного пользователя
+
+    GET: /bookings/owner?state=FUTURE
+    header: userId`  
+
+#### Запросы:
+
+  1) Создать запрос на поиск предмета
+     
+    POST: /requests
+    Body {"description": "Коньки детские, 30 размер"}    
+    header: userId`  
+
+  2) Получить все запросы конкретного пользователя
+    
+    GET: /requests
+    header: userId`  
+
+  3) Получить запросы от всех пользователей кроме запросов от конкретного пользователя
+
+    GET: /requests/all
+    header: userId`  
+
+  4) Получить запросы с конкретным номером
+
+    GET: /requests/{requestId}
+    header: userId`  

@@ -90,7 +90,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ)
+    @Transactional(readOnly = true)
     public ItemDTOWithBookings getItem(long userId, long itemId) {
         Optional<Item> item = itemRepository.findById(itemId);
         return item.map(i -> itemDTOMapper.toDTOWithBookings(userId, i)).orElseThrow(
@@ -98,7 +98,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ)
+    @Transactional(readOnly = true)
     public Collection<ItemDTOWithBookings> getAllItems(long userId) {
         validator.validateIfUserNotExists(userId);
         Collection<Item> items = itemRepository.getAllItems(userId);
@@ -106,7 +106,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ)
+    @Transactional(readOnly = true)
     public Collection<ItemDTO> searchItems(String text) {
         if (isNull(text) || text.isBlank()) {
             return Collections.emptyList();
@@ -116,7 +116,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Transactional
     public CommentDTO addComment(long userId, long itemId, CommentCreateDTO commentDto) {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new IdNotFoundException(String.format("Item with id=%d does not exists", itemId)));

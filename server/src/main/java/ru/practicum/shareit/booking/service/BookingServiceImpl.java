@@ -83,7 +83,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ)
+    @Transactional(readOnly = true)
     public List<BookingDto> getAllBookingsOfUser(long userId, BookingState state) {
         validator.validateIfUserNotExists(userId);
         List<Booking> bookings = switch (state) {
@@ -100,7 +100,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ)
+    @Transactional(readOnly = true)
     public List<BookingDto> getAllBookingsForUserItems(long userId, BookingState state) {
         validator.validateIfUserNotExists(userId);
         List<Booking> bookings = switch (state) {
